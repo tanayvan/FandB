@@ -26,7 +26,7 @@ export default function AddBranch() {
     getAllCities().then((data) => {
       if (!data.error) {
         let city = [];
-        data.map((data) => {
+        data.forEach((data) => {
           city.push({ id: data._id, name: data.name });
         });
         console.log(data);

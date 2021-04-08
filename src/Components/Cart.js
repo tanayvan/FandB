@@ -11,15 +11,14 @@ export default function Cart() {
   const [total, setTotal] = useState(0);
   const cartItems = cart;
 
-  function sum() {
-    var total = 0;
-    cart.map((item) => {
-      total = total + item.product.price * item.quantity;
-    });
-    return total;
-  }
-
   useEffect(() => {
+    function sum() {
+      var total = 0;
+      cart.forEach((item) => {
+        total = total + item.product.price * item.quantity;
+      });
+      return total;
+    }
     const total = sum();
     setTotal(total);
   }, [cart]);

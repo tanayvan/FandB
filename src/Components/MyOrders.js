@@ -8,17 +8,14 @@ export default function MyOrders() {
   const { user } = useContext(cartContext);
 
   useEffect(() => {
-    console.log(user);
-
     getUserOrders(user.id, user.token)
       .then((data) => {
-        console.log(data);
         setOrders(data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [user]);
   const [orders, setOrders] = useState([]);
   return (
     <div

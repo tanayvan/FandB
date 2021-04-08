@@ -36,11 +36,12 @@ export default function Checkout() {
 
   function sum() {
     var total = 0;
-    cart.map((item) => {
+    cart.forEach((item) => {
       total = total + item.product.price * item.quantity;
     });
     return total;
   }
+
   const makePayment = (token) => {
     const body = {
       token: token,
@@ -68,7 +69,7 @@ export default function Checkout() {
   };
   const handleCafePayment = (payment) => {
     let productList = [];
-    cart.map((cart) => {
+    cart.forEach((cart) => {
       productList.push({
         product: cart.product._id,
         quantity: cart.quantity,
@@ -103,15 +104,20 @@ export default function Checkout() {
       });
   };
   useEffect(() => {
+    function sum() {
+      var total = 0;
+      cart.forEach((item) => {
+        total = total + item.product.price * item.quantity;
+      });
+      return total;
+    }
     const total = sum();
     setTotal(total);
   }, [cart]);
   useEffect(() => {
     getAllBranches()
       .then((data) => {
-        console.log(orderType);
-        data.map((d) => {
-          console.log(data);
+        data.forEach((d) => {
           if (d.name === orderType.branch) {
             setBranchDetails(d);
           }
@@ -120,7 +126,7 @@ export default function Checkout() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [orderType.branch]);
   const onTableSelect = (index) => {
     console.log(index + 1);
     setTabelNo(index);

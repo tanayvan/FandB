@@ -40,7 +40,7 @@ export default function Navbar() {
           console.log(data);
         } else {
           let city = [];
-          data.map((c) => {
+          data.forEach((c) => {
             city.push(c.name);
           });
 
@@ -54,7 +54,7 @@ export default function Navbar() {
       if (data.error) {
       } else {
         let branch = [];
-        data.map((c) => {
+        data.forEach((c) => {
           branch.push({
             name: c.name,
             city: c.city.name,
@@ -333,7 +333,7 @@ export default function Navbar() {
             //   id: "outlined-age-native-simple",
             // }}
           >
-            {branch.map((text, index) => {
+            {branch.forEach((text, index) => {
               if (text.city === placeButton) {
                 return (
                   <MenuItem key={index.toString()} value={text.name}>

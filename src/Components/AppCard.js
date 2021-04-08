@@ -25,7 +25,7 @@ export default function AppCard({
           alignSelf: "stretch",
         }}
         widht="100%"
-        alt="product image"
+        alt="product"
       />
       <div className="cardDetail">
         <div className="cardTitle">

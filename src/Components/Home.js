@@ -1,5 +1,4 @@
 import { Container, Grid } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
 import React, { useContext, useEffect, useState } from "react";
 import cartContext from "../context";
 import { getAllProducts } from "../Helper/apicalls";
@@ -18,8 +17,7 @@ export default function Home() {
         if (data.error) {
           console.log(data.error);
         }
-        console.log("items", data);
-        console.log("cart", cart);
+
         setProducts(data);
       });
     }
@@ -35,7 +33,7 @@ export default function Home() {
               );
               let no = 0;
               if (InCart.length > 0) {
-                InCart.map((item) => {
+                InCart.forEach((item) => {
                   no = no + item.quantity;
                 });
               }

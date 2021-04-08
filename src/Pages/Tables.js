@@ -33,7 +33,7 @@ export default function Tables() {
     getAllBranches()
       .then((data) => {
         console.log(orderType);
-        data.map((d) => {
+        data.forEach((d) => {
           if (d.name === orderType.branch) {
             setBranchDetails(d);
 
@@ -44,7 +44,7 @@ export default function Tables() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [orderType]);
 
   const handleClick = () => {
     if (reservedTables.includes(selected)) {
