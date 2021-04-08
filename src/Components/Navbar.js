@@ -333,15 +333,13 @@ export default function Navbar() {
             //   id: "outlined-age-native-simple",
             // }}
           >
-            {branch.map((text, index) => {
-              if (text.city === placeButton) {
-                return (
-                  <MenuItem key={index.toString()} value={text.name}>
-                    {text.name}
-                  </MenuItem>
-                );
-              }
-            })}
+            {branch
+              .filter((text) => text.city === placeButton)
+              .map((text) => (
+                <MenuItem key={text._id} value={text.name}>
+                  {text.name}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
       </Container>
