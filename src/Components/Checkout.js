@@ -6,16 +6,13 @@ import {
   Grid,
   Icon,
   IconButton,
-  Input,
   Modal,
-  Paper,
 } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import StripeCheckout from "react-stripe-checkout";
-import { useHistory, Redirect } from "react-router";
+import { Redirect } from "react-router";
 import Color from "../Config/Color";
 import cartContext from "../context";
-import CartItem from "./CartItem";
 import OrderItem from "./OrderItem";
 import { createOrder, API, getAllBranches } from "../Helper/apicalls";
 import Table from "./Table";
@@ -28,7 +25,6 @@ const isReserved = (table, number) => {
   return value;
 };
 export default function Checkout() {
-  const history = useHistory();
   const { cart, orderType, user, setCart } = useContext(cartContext);
   const [total, setTotal] = useState(0);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -64,7 +60,7 @@ export default function Checkout() {
         console.log(response);
         const { status } = response;
         console.log(status);
-        if (status == 200) {
+        if (status === 200) {
           handleCafePayment("Pay with Card");
         }
       })
@@ -107,7 +103,8 @@ export default function Checkout() {
       });
   };
   useEffect(() => {
-    setTotal(sum());
+    const total = sum();
+    setTotal(total);
   }, [cart]);
   useEffect(() => {
     getAllBranches()
@@ -267,11 +264,16 @@ export default function Checkout() {
                   marginBlock: 20,
                 }}
               >
-                <img src={tableGreen} style={{ width: 20, margin: 5 }} /> :
-                Available
+                <img
+                  src={tableGreen}
+                  style={{ width: 20, margin: 5 }}
+                  alt="avaiable table"
+                />{" "}
+                : Available
                 <img
                   src={tableGrey}
                   style={{ width: 20, marginLeft: 20, marginRight: 5 }}
+                  alt="not avaiable table"
                 />{" "}
                 : Booked
               </div>

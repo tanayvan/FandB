@@ -1,11 +1,4 @@
-import {
-  AppBar,
-  Box,
-  Icon,
-  IconButton,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
+import { AppBar, Box, Icon, Toolbar, Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 

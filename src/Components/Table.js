@@ -35,7 +35,7 @@ export default function Table({ reserved, onClick, number, admin }) {
           {number}
         </div>
       </div>
-      <img src={reserved ? tableGrey : tableGreen} />
+      <img src={reserved ? tableGrey : tableGreen} alt="table" />
     </div>
   );
 }

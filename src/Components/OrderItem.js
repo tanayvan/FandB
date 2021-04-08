@@ -1,8 +1,5 @@
-import { Avatar, Button, Icon } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import React, { useContext, useState } from "react";
-import Color from "../Config/Color";
-import cartContext from "../context";
+import { Avatar } from "@material-ui/core";
+import React from "react";
 import "./My.css";
 
 export default function OrderItem({ item }) {

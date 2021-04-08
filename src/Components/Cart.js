@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Icon, Input, Paper } from "@material-ui/core";
+import { Button, Container, Grid } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Color from "../Config/Color";
@@ -7,7 +7,7 @@ import CartItem from "./CartItem";
 
 export default function Cart() {
   const history = useHistory();
-  const { cart, setCart, orderType, user } = useContext(cartContext);
+  const { cart, user } = useContext(cartContext);
   const [total, setTotal] = useState(0);
   const cartItems = cart;
 
@@ -20,7 +20,8 @@ export default function Cart() {
   }
 
   useEffect(() => {
-    setTotal(sum());
+    const total = sum();
+    setTotal(total);
   }, [cart]);
 
   // const cartItems = [
@@ -51,7 +52,7 @@ export default function Cart() {
 
   return (
     <div style={{ flexGrow: 1, margin: 20 }}>
-      {cart.length == 0 && (
+      {cart.length === 0 && (
         <Container
           maxWidth="sm"
           style={{
@@ -64,6 +65,7 @@ export default function Cart() {
           <img
             src="https://www.sngcrafts.com/uploads/emptycart.png"
             style={{ color: "red", opacity: 0.3, height: 100 }}
+            alt="empty cart"
           />
           <p style={{ fontSize: 20 }}>
             Your cart is empty. <br />

@@ -1,6 +1,7 @@
-import { Container, Grid, Icon, IconButton, Paper } from "@material-ui/core";
+import { Container, Grid, Icon, IconButton } from "@material-ui/core";
 import React from "react";
 import { Twitter, Instagram } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -9,12 +10,12 @@ export default function Footer() {
         <Grid container spacing={3} style={{ paddingBlock: 20 }}>
           <Grid item xs={12} sm={6}>
             <p>
-              <a>About Us</a>
+              <Link>About Us</Link>
             </p>
             <p>
-              <a>Contact Us</a>
+              <Link>Contact Us</Link>
             </p>
-            <a>Terms &amp; Conditions</a>
+            <Link>Terms &amp; Conditions</Link>
           </Grid>
           <Grid
             item

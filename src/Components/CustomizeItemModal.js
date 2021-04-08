@@ -1,5 +1,4 @@
 import { Button, Grid, Icon, IconButton, Modal } from "@material-ui/core";
-import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import React, { useContext, useState } from "react";
 import cartContext from "../context";
 import Customiztion from "./Customiztion";
@@ -17,7 +16,7 @@ export default function CustomizeItemModal({
   const [size, setSize] = useState("Regular");
   const [sugar, setSugar] = useState("Regular");
   const [milk, setMilk] = useState("Regular");
-  const { cart, setCart } = useContext(cartContext);
+  const { setCart } = useContext(cartContext);
   const handleAddToCart = () => {
     const cart = JSON.parse(localStorage.getItem("cart"));
     // {
@@ -29,10 +28,10 @@ export default function CustomizeItemModal({
     var isPresent = false;
     cart.forEach((cart) => {
       if (
-        cart.product._id == product._id &&
-        cart.milk == milk &&
-        cart.size == size &&
-        cart.sugar == sugar
+        cart.product._id === product._id &&
+        cart.milk === milk &&
+        cart.size === size &&
+        cart.sugar === sugar
       ) {
         cart.quantity = cart.quantity + 1;
         setCart(cart);
@@ -104,7 +103,7 @@ export default function CustomizeItemModal({
                     minWidth: 25,
                   }}
                   onClick={() => {
-                    if (itemQuantity == 1) {
+                    if (itemQuantity === 1) {
                       closeModal();
                       return;
                     }

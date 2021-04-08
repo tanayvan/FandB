@@ -31,7 +31,7 @@ export default function AddCategory() {
     });
   };
 
-  if (!user || user.role == 0) {
+  if (!user || user.role === 0) {
     return <NotAdmin />;
   }
 

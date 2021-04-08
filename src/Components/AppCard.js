@@ -1,4 +1,4 @@
-import { Button, Card, CardMedia, Icon } from "@material-ui/core";
+import { Button, Card, Icon } from "@material-ui/core";
 import React from "react";
 import "./My.css";
 
@@ -25,6 +25,7 @@ export default function AppCard({
           alignSelf: "stretch",
         }}
         widht="100%"
+        alt="product image"
       />
       <div className="cardDetail">
         <div className="cardTitle">

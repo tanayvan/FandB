@@ -91,7 +91,7 @@ export default function Tables() {
     });
   };
 
-  if (!user || user.role == 0) {
+  if (!user || user.role === 0) {
     return <NotAdmin />;
   }
 
@@ -125,11 +125,16 @@ export default function Tables() {
               marginBlock: 20,
             }}
           >
-            <img src={tableGreen} style={{ width: 20, margin: 5 }} /> :
-            Available
+            <img
+              src={tableGreen}
+              style={{ width: 20, margin: 5 }}
+              alt="available"
+            />{" "}
+            : Available
             <img
               src={tableGrey}
               style={{ width: 20, marginLeft: 20, marginRight: 5 }}
+              alt="unavailable"
             />{" "}
             : Booked
           </div>

@@ -62,7 +62,7 @@ export default function AddBranch() {
     resetForm();
   };
 
-  if (!user || user.role == 0) {
+  if (!user || user.role === 0) {
     return <NotAdmin />;
   }
 

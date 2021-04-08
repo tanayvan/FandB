@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import cartContext from "./context";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import CartPage from "./Pages/CartPage";
 import LoginPage from "./Pages/LoginPage";

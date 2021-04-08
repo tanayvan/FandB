@@ -21,8 +21,8 @@ export default function Customiztion({ title, options, onChange }) {
                 margin: 5,
                 border: "none",
                 width: "80%",
-                backgroundColor: choice == text.name ? "#5E7E47" : "#EDEDED",
-                color: choice == text.name ? "white" : "black",
+                backgroundColor: choice === text.name ? "#5E7E47" : "#EDEDED",
+                color: choice === text.name ? "white" : "black",
 
                 // margin: 20,
               }}

@@ -34,7 +34,7 @@ export default function AddCity() {
       .catch((err) => console.log(err));
   };
 
-  if (!user || user.role == 0) {
+  if (!user || user.role === 0) {
     return <NotAdmin />;
   }
 

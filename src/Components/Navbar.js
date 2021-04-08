@@ -14,7 +14,6 @@ import Icon from "@material-ui/core/Icon";
 import {
   Badge,
   Box,
-  Button,
   Container,
   Divider,
   FormControl,
@@ -26,7 +25,7 @@ import {
   Select,
 } from "@material-ui/core";
 import { Alert, ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import cartContext from "../context";
 import { getAllBranches, getAllCities } from "../Helper/apicalls";
 
@@ -89,7 +88,6 @@ export default function Navbar() {
         height: "100%",
         display: "flex",
         flexFlow: "column",
-        height: "100%",
       }}
       role="presentation"
       onClick={() => setShowSideBar(false)}
@@ -156,7 +154,7 @@ export default function Navbar() {
           </ListItem>
         )}
 
-        {user && user.role == 1 && (
+        {user && user.role === 1 && (
           <>
             <Divider />
             <ListItem
@@ -246,7 +244,7 @@ export default function Navbar() {
           setOrder(event.target.value);
           let temp = { ...orderType };
           temp["type"] = event.target.value;
-          if (event.target.value != "Delivery") {
+          if (event.target.value !== "Delivery") {
             localStorage.setItem("orderType", JSON.stringify(temp));
           } else {
             window.location.replace("https://www.zomato.com");
@@ -336,7 +334,7 @@ export default function Navbar() {
             // }}
           >
             {branch.map((text, index) => {
-              if (text.city == placeButton) {
+              if (text.city === placeButton) {
                 return (
                   <MenuItem key={index.toString()} value={text.name}>
                     {text.name}

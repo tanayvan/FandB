@@ -15,6 +15,7 @@ import * as yup from "yup";
 import { getAllCategories, createProduct } from "../Helper/apicalls";
 import cartContext from "../context";
 import NotAdmin from "../Components/NotAdmin";
+import ErrorText from "../Components/ErrorText";
 
 export default function AddProduct() {
   const Schema = yup.object().shape({
@@ -56,7 +57,7 @@ export default function AddProduct() {
   const { user } = useContext(cartContext);
   const [categoryList, setCategoryList] = useState([]);
 
-  if (!user || user.role == 0) {
+  if (!user || user.role === 0) {
     return <NotAdmin />;
   }
 
@@ -85,7 +86,7 @@ export default function AddProduct() {
           <p style={{ fontSize: 25 }}>Add Product</p>
           {/* <br /> */}
           {/* <p style={{ fontSize: 14 }}>Login with your mobile no.</p> */}
-
+          <ErrorText error={error} />
           <FormikForm
             initialValues={{
               title: "",

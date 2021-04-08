@@ -1,9 +1,8 @@
-import { Container, Grid } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import cartContext from "../context";
 import { getUserOrders } from "../Helper/apicalls";
 import Order from "./Order";
-import OrderItem from "./OrderItem";
 
 export default function MyOrders() {
   const { user } = useContext(cartContext);
