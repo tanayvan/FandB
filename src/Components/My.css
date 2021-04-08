@@ -1,0 +1,40 @@
+.cardDetail {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex: 1;
+  padding: 5px 10px;
+}
+.cardTitle {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  margin-right: 20px;
+}
+.cardSubTitle {
+  margin-top: 10px;
+  font-size: 14px;
+  color: grey;
+  height: 60px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.modalButton {
+  width: 80%;
+}
+
+.cartBox {
+  background-color: white;
+  border: 1px solid #e8e8e8;
+  padding: 10px;
+}
