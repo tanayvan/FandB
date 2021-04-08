@@ -333,7 +333,7 @@ export default function Navbar() {
             //   id: "outlined-age-native-simple",
             // }}
           >
-            {branch.forEach((text, index) => {
+            {branch.map((text, index) => {
               if (text.city === placeButton) {
                 return (
                   <MenuItem key={index.toString()} value={text.name}>
