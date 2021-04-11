@@ -23,32 +23,6 @@ export default function Cart() {
     setTotal(total);
   }, [cart]);
 
-  // const cartItems = [
-  //   {
-  //     title: "coffe",
-  //     photo:
-  //       "https://images.all-free-download.com/images/graphicthumb/coffee_time_513817.jpg",
-  //     specification: ["Regular"],
-  //     price: 100,
-  //     quantity: 3,
-  //   },
-  //   {
-  //     title: "Tea",
-  //     photo:
-  //       "https://lh3.googleusercontent.com/0s--EXi3zgXNGif_mlOu_qMXCDXVi63HNx1YO0tjVqsGv_nGo3uAm3K7NRaP4iJ8nMHJfMGi2rRanL-a_e-NtXWyDrs=w640-h400-e365-rj-sc0x00ffffff",
-  //     specification: ["Regular", "Extra sugar"],
-  //     price: 50,
-  //     quantity: 2,
-  //   },
-  //   {
-  //     title: "Masala Tea",
-  //     photo: "https://cdn.wallpapersafari.com/46/69/Wb9n1Y.jpg",
-  //     specification: ["Full", "Extra milk", "Less Sugar"],
-  //     price: 70,
-  //     quantity: 4,
-  //   },
-  // ];
-
   return (
     <div style={{ flexGrow: 1, margin: 20 }}>
       {cart.length === 0 && (

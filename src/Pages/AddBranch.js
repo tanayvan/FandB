@@ -40,7 +40,7 @@ export default function AddBranch() {
   const { user } = useContext(cartContext);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (values, resetForm) => {
+  const handleSubmit = (values, resetForm, showSuccess) => {
     setLoading(true);
     if (!city) {
       setError("Select city in which branch is located");
@@ -61,6 +61,7 @@ export default function AddBranch() {
         } else {
           resetForm();
           setLoading(false);
+          showSuccess();
         }
       })
       .catch((err) => console.log(err));
@@ -118,15 +119,16 @@ export default function AddBranch() {
             </Select>
           </FormControl>
           <FormikForm
+            successMessage="Branch added successfully"
             initialValues={{
               branch: "",
               tables: "",
             }}
             validationSchema={Schema}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values, { resetForm }, showSuccess) => {
               values.tables = parseInt(values.tables);
 
-              handleSubmit(values, resetForm);
+              handleSubmit(values, resetForm, showSuccess);
             }}
           >
             <FormInput

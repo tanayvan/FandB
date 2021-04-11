@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import Lottie from "react-lottie";
 import Footer from "../Components/Footer";
 import MyOrders from "../Components/MyOrders";
 import Navbar2 from "../Components/Navbar2";
+import coffeeLoading from "../Config/coffeeLoading.json";
 
 export default function MyOrdersPage() {
+  const [loading, setLoading] = useState(false);
+
   return (
     <div
       style={{
@@ -12,12 +16,26 @@ export default function MyOrdersPage() {
         backgroundAttachment: "fixed",
         display: "flex",
         flexFlow: "column",
-        height: "100%",
-        // backgroundSize: ,
+        height: loading ? "100%" : "auto",
       }}
     >
       <Navbar2 />
-      <MyOrders />
+      <MyOrders setLoading={setLoading} loading={loading} />
+      {loading && (
+        <div style={{ flexGrow: 1 }}>
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: coffeeLoading,
+              rendererSettings: {
+                preserveAspectRatio: "xMidYMid slice",
+              },
+            }}
+            width={350}
+          />
+        </div>
+      )}
       <Footer />
     </div>
   );

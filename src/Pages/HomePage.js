@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Lottie from "react-lottie";
 import coffeeLoading from "../Config/coffeeLoading.json";
 
 import Footer from "../Components/Footer";
 import Home from "../Components/Home";
 import Navbar from "../Components/Navbar";
+import cartContext from "../context";
 
 export default function HomePage() {
-  const [loading, setLoading] = useState(false);
+  const { products } = useContext(cartContext);
 
   return (
     <div
@@ -17,12 +18,12 @@ export default function HomePage() {
         backgroundAttachment: "fixed",
         display: "flex",
         flexFlow: "column",
-        height: loading ? "100%" : "auto",
+        height: !products ? "100%" : "auto",
       }}
     >
       <Navbar />
-      <Home changeLoading={setLoading} loading={loading} />
-      {loading && (
+      {products && <Home />}
+      {!products && (
         <div style={{ flexGrow: 1 }}>
           <Lottie
             options={{

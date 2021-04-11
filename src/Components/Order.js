@@ -1,8 +1,11 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useContext } from "react";
+import cartContext from "../context";
 import OrderItem from "./OrderItem";
 
-export default function Order({ branch, type, amount, date, items }) {
+export default function Order({ branch, type, amount, date, items, table }) {
+  const { products } = useContext(cartContext);
+
   return (
     <div style={{ margin: "50px 0px" }}>
       <div className="cartBox" style={{ backgroundColor: "#F4F4F4" }}>
@@ -22,7 +25,7 @@ export default function Order({ branch, type, amount, date, items }) {
           </Grid>
           <Grid item xs={6} sm={3}>
             <div style={{ fontSize: 14, color: "grey" }}>Table</div>
-            <div>NA</div>
+            <div>{table ? table : "NA"}</div>
           </Grid>
           <Grid item xs={6} sm={3}>
             <div style={{ fontSize: 14, color: "grey" }}>Total</div>
@@ -30,8 +33,12 @@ export default function Order({ branch, type, amount, date, items }) {
           </Grid>
         </Grid>
       </div>
-      {items.map((item) => {
-        return <OrderItem item={item} />;
+      {items.map((item, index) => {
+        let finalItem = { ...item };
+        let productDetail = products.find((x) => x._id === item.product);
+        finalItem.product = productDetail;
+        console.log("yay", finalItem);
+        return <OrderItem item={finalItem} key={index.toString()} />;
       })}
       {/* <OrderItem /> */}
     </div>

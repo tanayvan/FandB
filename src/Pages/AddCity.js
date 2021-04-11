@@ -19,8 +19,9 @@ export default function AddCity() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (values, resetForm) => {
+  const handleSubmit = (values, resetForm, showSuccess) => {
     setLoading(true);
+    setError("");
     const body = {
       name: values.city,
     };
@@ -32,6 +33,7 @@ export default function AddCity() {
         } else {
           resetForm();
           setLoading(false);
+          showSuccess();
         }
       })
       .catch((err) => console.log(err));
@@ -54,6 +56,7 @@ export default function AddCity() {
       }}
     >
       <Navbar2 />
+
       <div style={{ flexGrow: 1, margin: "20px 0px" }}>
         <Container
           maxWidth="xs"
@@ -67,12 +70,13 @@ export default function AddCity() {
 
           <ErrorText visible={error} error={error} />
           <FormikForm
+            successMessage="City Addes Successfully"
             initialValues={{
               city: "",
             }}
             validationSchema={Schema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values, resetForm);
+            onSubmit={(values, { resetForm }, showSuccess) => {
+              handleSubmit(values, resetForm, showSuccess);
             }}
           >
             <FormInput

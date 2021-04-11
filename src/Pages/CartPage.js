@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Cart from "../Components/Cart";
 import Footer from "../Components/Footer";
 import Navbar2 from "../Components/Navbar2";
+import cartContext from "../context";
 
 export default function CartPage() {
+  const { cart } = useContext(cartContext);
+
   return (
     <div
       style={{
@@ -12,8 +15,7 @@ export default function CartPage() {
         backgroundAttachment: "fixed",
         display: "flex",
         flexFlow: "column",
-        height: "100%",
-        // backgroundSize: ,
+        height: cart.length > 1 ? "auto" : "100%",
       }}
     >
       <Navbar2 />

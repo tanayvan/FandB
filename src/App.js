@@ -13,6 +13,8 @@ import MyOrdersPage from "./Pages/MyOrdersPage";
 import CheckoutPage from "./Pages/CheckoutPage";
 import Tables from "./Pages/Tables";
 import ResetPassword from "./Pages/ResetPassword";
+import { getAllProducts } from "./Helper/apicalls";
+import OrderPlaced from "./Pages/OrderPlaced";
 
 export default function App() {
   const [cart, setCart] = useState(
@@ -30,15 +32,33 @@ export default function App() {
       ? JSON.parse(localStorage.getItem("orderType"))
       : null
   );
+  const [products, setProducts] = useState();
   useEffect(() => {
     if (!localStorage.getItem("cart")) {
       localStorage.setItem("cart", JSON.stringify([]));
     }
-  }, []);
+    if (orderType && orderType.branch) {
+      getAllProducts().then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        }
+
+        setProducts(data);
+      });
+    }
+  }, [orderType]);
 
   return (
     <cartContext.Provider
-      value={{ cart, setCart, orderType, setOrderType, user, setUser }}
+      value={{
+        cart,
+        setCart,
+        orderType,
+        setOrderType,
+        user,
+        setUser,
+        products,
+      }}
     >
       <BrowserRouter>
         <Switch>
@@ -54,6 +74,7 @@ export default function App() {
           <Route exact path="/checkout" component={CheckoutPage} />
           <Route exact path="/tables" component={Tables} />
           <Route exact path="/resetpassword" component={ResetPassword} />
+          <Route exact path="/orderplaced" component={OrderPlaced} />
         </Switch>
       </BrowserRouter>
     </cartContext.Provider>

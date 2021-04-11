@@ -14,6 +14,7 @@ import Navbar2 from "../Components/Navbar2";
 import FormInputOtp from "../Components/FormInputOtp";
 import { resetPassword } from "../Helper/apicalls";
 import ErrorText from "../Components/ErrorText";
+import color from "../Config/Color";
 
 export default function ResetPassword() {
   const history = useHistory();
@@ -147,6 +148,25 @@ export default function ResetPassword() {
                   separator={<span style={{ width: 10 }}> </span>}
                   numInputs={6}
                 />
+                <span
+                  style={{ color: color.green, cursor: "pointer" }}
+                  onClick={() => {
+                    setLoading(true);
+                    setError("");
+                    resetPassword("/forgotpassword", { email: email }).then(
+                      (data) => {
+                        if (data.error) {
+                          setError(data.message);
+                          setLoading(false);
+                          return;
+                        }
+                        setLoading(false);
+                      }
+                    );
+                  }}
+                >
+                  Resend code?
+                </span>
                 <FormSubmit loading={loading}>Next</FormSubmit>
               </FormikForm>
             </SwiperSlide>

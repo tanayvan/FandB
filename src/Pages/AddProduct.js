@@ -32,7 +32,7 @@ export default function AddProduct() {
     stock: yup.number().required(),
   });
 
-  const handleSubmit = (values, resetForm) => {
+  const handleSubmit = (values, resetForm, showSuccess) => {
     setLoading(true);
 
     const formdata = new FormData();
@@ -51,6 +51,7 @@ export default function AddProduct() {
       }
       resetForm();
       setLoading(false);
+      showSuccess();
     });
   };
   useEffect(() => {
@@ -88,6 +89,7 @@ export default function AddProduct() {
           <p style={{ fontSize: 25 }}>Add Product</p>
           <ErrorText error={error} />
           <FormikForm
+            successMessage="Product added Successfully"
             initialValues={{
               title: "",
               subtitle: "",
@@ -96,10 +98,10 @@ export default function AddProduct() {
               stock: "",
             }}
             validationSchema={Schema}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values, { resetForm }, showSuccess) => {
               values.stock = parseInt(values.stock);
               values.price = parseInt(values.price);
-              handleSubmit(values, resetForm);
+              handleSubmit(values, resetForm, showSuccess);
             }}
           >
             <FormInput

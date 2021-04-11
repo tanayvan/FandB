@@ -1,5 +1,4 @@
 import {
-  Button,
   Checkbox,
   Container,
   FormControlLabel,
@@ -18,6 +17,7 @@ import { createOrder, API, getAllBranches } from "../Helper/apicalls";
 import Table from "./Table";
 import tableGrey from "../Config/table.svg";
 import tableGreen from "../Config/tableGreen.svg";
+import AppButton from "./AppButton";
 
 const isReserved = (table, number) => {
   const value = table.includes(number);
@@ -33,6 +33,8 @@ export default function Checkout() {
   const [tabelNo, setTabelNo] = useState(0);
   const [showTables, setShowTables] = useState(false);
   const [instructions, setInstructions] = useState("false");
+  const [loading, setLoading] = useState(false);
+  const [paymentloading, setPaymentloading] = useState(false);
 
   function sum() {
     var total = 0;
@@ -43,6 +45,7 @@ export default function Checkout() {
   }
 
   const makePayment = (token) => {
+    setPaymentloading(true);
     const body = {
       token: token,
       product: cart,
@@ -57,17 +60,20 @@ export default function Checkout() {
       headers: header,
       body: JSON.stringify(body),
     })
-      .then((response) => {
+      .then(async (response) => {
         console.log(response);
         const { status } = response;
         console.log(status);
         if (status === 200) {
-          handleCafePayment("Pay with Card");
+          await handleCafePayment("Pay with Card");
+          setPaymentloading(false);
+        } else {
+          setPaymentloading(false);
         }
       })
       .catch((err) => console.log(err));
   };
-  const handleCafePayment = (payment) => {
+  const handleCafePayment = async (payment) => {
     let productList = [];
     cart.forEach((cart) => {
       productList.push({
@@ -89,15 +95,16 @@ export default function Checkout() {
       instructions: instructions,
     };
 
-    createOrder(user.id, user.token, body)
+    await createOrder(user.id, user.token, body)
       .then((data) => {
         if (!data.error) {
           localStorage.setItem("cart", JSON.stringify([]));
           setCart([]);
           setIsSuccess(true);
+
           return;
         }
-        console.log(data.error);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -134,7 +141,7 @@ export default function Checkout() {
   };
 
   if (isSuccess) {
-    return <Redirect to="/" />;
+    return <Redirect to="/orderplaced" />;
   }
   return (
     <div style={{ flexGrow: 1, margin: 20 }}>
@@ -204,37 +211,51 @@ export default function Checkout() {
                 </div>
               )}
 
-              <div style={{ margin: "10px 0px 0px 0px ", display: "flex" }}>
-                <div style={{ width: "50%", textAlign: "center" }}>
-                  <Button
-                    style={{
-                      backgroundColor: Color.green,
-                      color: "white",
-                      width: "90%",
-                    }}
-                    onClick={() => {
-                      handleCafePayment("Pay on Visit");
-                    }}
-                  >
-                    Pay at cafe
-                  </Button>
-                </div>
-                <div style={{ width: "50%", textAlign: "center" }}>
-                  <StripeCheckout
-                    stripeKey={process.env.REACT_APP_KEY}
-                    token={makePayment}
-                    amount={sum() * 100}
-                  >
-                    <Button
-                      style={{
-                        backgroundColor: Color.green,
-                        color: "white",
-                        width: "90%",
+              <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <div style={{ width: "90%", textAlign: "center" }}>
+                    <AppButton
+                      padding="5px 0px"
+                      top="30%"
+                      onClick={async () => {
+                        setLoading(true);
+                        await handleCafePayment("Pay on Visit");
+                        setLoading(false);
                       }}
+                      loading={loading}
                     >
-                      Pay with Card
-                    </Button>
-                  </StripeCheckout>
+                      Pay at cafe
+                    </AppButton>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <div style={{ width: "90%" }}>
+                    <StripeCheckout
+                      stripeKey={process.env.REACT_APP_KEY}
+                      token={makePayment}
+                      amount={sum() * 100}
+                    >
+                      <AppButton
+                        padding="5px 0px"
+                        top="30%"
+                        loading={paymentloading}
+                      >
+                        Pay with Card
+                      </AppButton>
+                    </StripeCheckout>
+                  </div>
                 </div>
               </div>
             </Grid>

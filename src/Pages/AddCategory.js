@@ -19,7 +19,7 @@ export default function AddCategory() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (values, resetForm) => {
+  const handleSubmit = (values, resetForm, showSuccess) => {
     setLoading(true);
     const body = {
       name: values.category,
@@ -29,8 +29,9 @@ export default function AddCategory() {
         setError(data.error);
         setLoading(false);
       } else {
-        setLoading(false);
         resetForm();
+        setLoading(false);
+        showSuccess();
       }
     });
   };
@@ -66,12 +67,13 @@ export default function AddCategory() {
           {/* <p style={{ fontSize: 14 }}>Login with your mobile no.</p> */}
           <ErrorText visible={error} error={error} />
           <FormikForm
+            successMessage="Category Added Successfully"
             initialValues={{
               category: "",
             }}
             validationSchema={Schema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values, resetForm);
+            onSubmit={(values, { resetForm }, showSuccess) => {
+              handleSubmit(values, resetForm, showSuccess);
             }}
           >
             <FormInput
