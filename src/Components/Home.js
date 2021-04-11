@@ -1,29 +1,34 @@
 import { Container, Grid } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
+
 import cartContext from "../context";
 import { getAllProducts } from "../Helper/apicalls";
 import AppCard from "./AppCard";
 import CustomizeItemModal from "./CustomizeItemModal";
 
-export default function Home() {
+export default function Home({ changeLoading }) {
   const { cart, orderType } = useContext(cartContext);
   const [cartModalVisible, setCartModalVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
+    changeLoading(true);
     if (orderType && orderType.branch) {
       getAllProducts().then((data) => {
         if (data.error) {
           console.log(data.error);
+          changeLoading(false);
         }
 
         setProducts(data);
+        changeLoading(false);
       });
     }
-  }, [orderType]);
+  }, [orderType, changeLoading]);
+
   return (
-    <div style={{ margin: "30px 0px", flexGrow: 1 }}>
+    <div style={{ margin: "30px 0px" }}>
       <Container maxWidth="lg">
         <Grid spacing={2} container>
           {products.length > 0 &&

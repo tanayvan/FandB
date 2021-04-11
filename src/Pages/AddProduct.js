@@ -18,6 +18,13 @@ import NotAdmin from "../Components/NotAdmin";
 import ErrorText from "../Components/ErrorText";
 
 export default function AddProduct() {
+  const [category, setCategory] = useState("");
+  const [photo, setPhoto] = useState({});
+  const [error, setError] = useState("");
+  const { user } = useContext(cartContext);
+  const [categoryList, setCategoryList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const Schema = yup.object().shape({
     title: yup.string().required().min(3),
     subtitle: yup.string().required().min(3),
@@ -26,6 +33,8 @@ export default function AddProduct() {
   });
 
   const handleSubmit = (values, resetForm) => {
+    setLoading(true);
+
     const formdata = new FormData();
     formdata.append("name", values.title);
     formdata.append("description", values.subtitle);
@@ -34,13 +43,15 @@ export default function AddProduct() {
     formdata.append("category", category);
     formdata.append("photo", photo);
     createProduct(user.id, user.token, formdata).then((data) => {
+      console.log(data);
       if (data.error) {
         setError(data.error);
+        setLoading(false);
         return;
       }
-      console.log(data);
+      resetForm();
+      setLoading(false);
     });
-    // resetForm();
   };
   useEffect(() => {
     getAllCategories().then((data) => {
@@ -51,11 +62,6 @@ export default function AddProduct() {
       }
     });
   }, []);
-  const [category, setCategory] = useState("");
-  const [photo, setPhoto] = useState({});
-  const [error, setError] = useState("");
-  const { user } = useContext(cartContext);
-  const [categoryList, setCategoryList] = useState([]);
 
   if (!user || user.role === 0) {
     return <NotAdmin />;
@@ -67,14 +73,10 @@ export default function AddProduct() {
         backgroundImage: `url("https://cdn.europosters.eu/image/1300/wall-murals/brick-wall-white-312x219-cm-130g-m2-vlies-non-woven-i39966.jpg")`,
         backgroundRepeat: "repeat",
         backgroundAttachment: "fixed",
-        display: "flex",
-        flexFlow: "column",
-        height: "100%",
-        // backgroundSize: ,
       }}
     >
       <Navbar2 />
-      <div style={{ flexGrow: 1, margin: "20px 0px" }}>
+      <div style={{ margin: "40px 0px" }}>
         <Container
           maxWidth="xs"
           style={{
@@ -84,8 +86,6 @@ export default function AddProduct() {
           }}
         >
           <p style={{ fontSize: 25 }}>Add Product</p>
-          {/* <br /> */}
-          {/* <p style={{ fontSize: 14 }}>Login with your mobile no.</p> */}
           <ErrorText error={error} />
           <FormikForm
             initialValues={{
@@ -169,7 +169,7 @@ export default function AddProduct() {
               </Select>
             </FormControl>
 
-            <FormSubmit>Submit</FormSubmit>
+            <FormSubmit loading={loading}>Submit</FormSubmit>
           </FormikForm>
 
           <br />

@@ -201,3 +201,19 @@ export const ReserveATable = (userId, token, body, branchId) => {
     })
     .catch((err) => console.log(err));
 };
+export const resetPassword = (api, body) => {
+  return fetch(`${API}${api}`, {
+    method: "Post",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

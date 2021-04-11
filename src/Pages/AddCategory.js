@@ -17,15 +17,19 @@ export default function AddCategory() {
   });
   const { user } = useContext(cartContext);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (values, resetForm) => {
+    setLoading(true);
     const body = {
       name: values.category,
     };
     postACategory(body, user.id, user.token).then((data) => {
       if (data.error) {
         setError(data.error);
+        setLoading(false);
       } else {
+        setLoading(false);
         resetForm();
       }
     });
@@ -78,7 +82,7 @@ export default function AddCategory() {
               label="category"
             />
 
-            <FormSubmit>Submit</FormSubmit>
+            <FormSubmit loading={loading}>Submit</FormSubmit>
           </FormikForm>
 
           <br />

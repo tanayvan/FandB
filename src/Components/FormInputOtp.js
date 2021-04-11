@@ -1,9 +1,14 @@
-import React from "react";
-import ErrorText from "./ErrorText";
 import { useFormikContext } from "formik";
-import { TextField } from "@material-ui/core";
+import React from "react";
+import OtpInput from "react-otp-input";
+import ErrorText from "./ErrorText";
 
-function FormInput({ feildName, onChangeMore, ...otherPerameters }) {
+export default function FormInputOtp({
+  feildName,
+  onChangeMore,
+  hasErrored,
+  ...otherPerameters
+}) {
   const {
     setFieldTouched,
     setFieldValue,
@@ -11,14 +16,18 @@ function FormInput({ feildName, onChangeMore, ...otherPerameters }) {
     values,
     errors,
   } = useFormikContext();
+
   return (
-    <>
-      <TextField
-        style={{ margin: "10px 0px" }}
+    <div>
+      <OtpInput
+        containerStyle={{
+          justifyContent: "center",
+        }}
+        hasErrored={hasErrored || (touched[feildName] && errors[feildName])}
         onChange={(input) => {
-          setFieldValue(feildName, input.target.value);
+          setFieldValue(feildName, input);
           if (onChangeMore) {
-            onChangeMore(input.target.value);
+            onChangeMore(input);
           }
         }}
         value={values[feildName]}
@@ -31,8 +40,6 @@ function FormInput({ feildName, onChangeMore, ...otherPerameters }) {
         {...otherPerameters}
       />
       <ErrorText visible={touched[feildName]} error={errors[feildName]} />
-    </>
+    </div>
   );
 }
-
-export default FormInput;

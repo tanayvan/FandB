@@ -14,16 +14,22 @@ export default function Signup() {
     email: yup.string().email().required(),
     password: yup.string().required().min(8),
   });
+
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = (values) => {
+    setLoading(true);
     setError("");
     signup(values).then((data) => {
       // console.log(data);
       if (data.err) {
         setError(data.err);
+        setLoading(false);
         return;
       }
+      setLoading(false);
       setRedirect(true);
     });
   };
@@ -71,7 +77,7 @@ export default function Signup() {
             fullWidth
             label="Password"
           />
-          <FormSubmit>Sign Up</FormSubmit>
+          <FormSubmit loading={loading}>Sign Up</FormSubmit>
         </FormikForm>
 
         <br />

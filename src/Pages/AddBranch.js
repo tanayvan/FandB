@@ -38,10 +38,13 @@ export default function AddBranch() {
   const [cityList, setCityList] = useState([]);
   const [error, setError] = useState("");
   const { user } = useContext(cartContext);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (values, resetForm) => {
+    setLoading(true);
     if (!city) {
       setError("Select city in which branch is located");
+      setLoading(false);
       return;
     }
     values.city = city;
@@ -54,12 +57,13 @@ export default function AddBranch() {
       .then((data) => {
         if (data.error) {
           setError(data.error);
+          setLoading(false);
         } else {
           resetForm();
+          setLoading(false);
         }
       })
       .catch((err) => console.log(err));
-    resetForm();
   };
 
   if (!user || user.role === 0) {
@@ -142,7 +146,7 @@ export default function AddBranch() {
               label="Number of tables"
             />
 
-            <FormSubmit>Submit</FormSubmit>
+            <FormSubmit loading={loading}>Submit</FormSubmit>
           </FormikForm>
 
           <br />

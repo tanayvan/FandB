@@ -17,9 +17,10 @@ export default function AddCity() {
   });
   const { user } = useContext(cartContext);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (values, resetForm) => {
-    console.log(values);
+    setLoading(true);
     const body = {
       name: values.city,
     };
@@ -27,8 +28,10 @@ export default function AddCity() {
       .then((data) => {
         if (data.error) {
           setError(data.error);
+          setLoading(false);
         } else {
           resetForm();
+          setLoading(false);
         }
       })
       .catch((err) => console.log(err));
@@ -61,8 +64,7 @@ export default function AddCity() {
           }}
         >
           <p style={{ fontSize: 25 }}>Add Product</p>
-          {/* <br /> */}
-          {/* <p style={{ fontSize: 14 }}>Login with your mobile no.</p> */}
+
           <ErrorText visible={error} error={error} />
           <FormikForm
             initialValues={{
@@ -81,7 +83,7 @@ export default function AddCity() {
               label="City"
             />
 
-            <FormSubmit>Submit</FormSubmit>
+            <FormSubmit loading={loading}>Submit</FormSubmit>
           </FormikForm>
 
           <br />

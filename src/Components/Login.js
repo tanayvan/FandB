@@ -19,13 +19,18 @@ export default function Login() {
     email: yup.string().email().required(),
     password: yup.string().required().min(8),
   });
+
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = (values) => {
+    setLoading(true);
     setError("");
     login(values).then((data) => {
       if (data.error) {
         setError(data.error);
+        setLoading(false);
         return;
       }
       console.log(data);
@@ -44,6 +49,7 @@ export default function Login() {
         role: data.user.role,
         id: data.user._id,
       });
+      setLoading(false);
       setRedirect(true);
     });
   };
@@ -62,7 +68,7 @@ export default function Login() {
       >
         <p style={{ fontSize: 25 }}>Login</p>
         {/* <br /> */}
-        <p style={{ fontSize: 14 }}>Login with your mobile no.</p>
+        <p style={{ fontSize: 14 }}>Login with your email</p>
         <ErrorText visible={error} error={error} />
         <FormikForm
           initialValues={{ email: "", password: "" }}
@@ -84,7 +90,13 @@ export default function Login() {
             fullWidth
             label="Password"
           />
-          <FormSubmit>Login</FormSubmit>
+          <span
+            style={{ color: Color.green, cursor: "pointer" }}
+            onClick={() => history.push("/resetpassword")}
+          >
+            Forgot Password?
+          </span>
+          <FormSubmit loading={loading}>Login</FormSubmit>
         </FormikForm>
 
         <br />

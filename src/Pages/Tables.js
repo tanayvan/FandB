@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-} from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import Footer from "../Components/Footer";
 import Navbar2 from "../Components/Navbar2";
@@ -25,8 +17,7 @@ export default function Tables() {
   const { orderType, user } = useContext(cartContext);
 
   const [reservedTables, setReservedTables] = useState([]);
-  const [selected, setSelected] = useState(0);
-  const [showDialog, setShowDialog] = useState(false);
+
   const [branchDetails, setBranchDetails] = useState();
 
   useEffect(() => {
@@ -46,19 +37,11 @@ export default function Tables() {
       });
   }, [orderType]);
 
-  const handleClick = () => {
-    if (reservedTables.includes(selected)) {
-      handleunReserve();
-    } else {
-      handleReserve();
-    }
-  };
-
-  const handleunReserve = () => {
-    UnReserveATable(
+  const handleunReserve = async (tabelNo) => {
+    await UnReserveATable(
       user.id,
       user.token,
-      { table_no: selected },
+      { table_no: tabelNo },
       branchDetails._id
     ).then((data) => {
       if (data.error) {
@@ -66,18 +49,16 @@ export default function Tables() {
         return;
       }
       let temp = [...reservedTables];
-      console.log("before", temp);
-      temp.splice(temp.indexOf(selected), 1);
+
+      temp.splice(temp.indexOf(tabelNo), 1);
       setReservedTables(temp);
-      console.log("after", temp);
-      setShowDialog(false);
     });
   };
-  const handleReserve = () => {
-    ReserveATable(
+  const handleReserve = async (tabelNo) => {
+    await ReserveATable(
       user.id,
       user.token,
-      { table_no: selected },
+      { table_no: tabelNo },
       branchDetails._id
     ).then((data) => {
       if (data.error) {
@@ -85,9 +66,8 @@ export default function Tables() {
         return;
       }
       let temp = [...reservedTables];
-      temp.push(selected);
+      temp.push(tabelNo);
       setReservedTables(temp);
-      setShowDialog(false);
     });
   };
 
@@ -141,46 +121,22 @@ export default function Tables() {
           <Grid container spacing={4}>
             {branchDetails &&
               [...Array(branchDetails.tables)].map((t, index) => (
-                <Grid item xs={4} style={{ padding: "5%" }}>
+                <Grid
+                  item
+                  xs={4}
+                  style={{ padding: "5%" }}
+                  key={index.toString()}
+                >
                   <Table
                     admin={true}
                     reserved={reservedTables.includes(index + 1)}
                     number={index + 1}
-                    onClick={(index) => {
-                      setSelected(index);
-                      setShowDialog(true);
-                    }}
+                    handleunReserve={(number) => handleunReserve(number)}
+                    handleReserve={(number) => handleReserve(number)}
                   />
                 </Grid>
               ))}
           </Grid>
-          {selected && (
-            <Dialog open={showDialog}>
-              <DialogTitle id="alert-dialog-title">
-                {"Are you sure?"}
-              </DialogTitle>
-              <DialogContent>
-                you are{" "}
-                {reservedTables.includes(selected)
-                  ? "making available"
-                  : "reserving"}{" "}
-                table number {selected}.
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    setShowDialog(false);
-                  }}
-                  color="primary"
-                >
-                  NO
-                </Button>
-                <Button onClick={() => handleClick()} color="primary" autoFocus>
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
-          )}
         </Container>
       </div>
       <Footer />

@@ -12,6 +12,7 @@ import AddCategory from "./Pages/AddCategory";
 import MyOrdersPage from "./Pages/MyOrdersPage";
 import CheckoutPage from "./Pages/CheckoutPage";
 import Tables from "./Pages/Tables";
+import ResetPassword from "./Pages/ResetPassword";
 
 export default function App() {
   const [cart, setCart] = useState(
@@ -52,6 +53,7 @@ export default function App() {
           <Route exact path="/myorders" component={MyOrdersPage} />
           <Route exact path="/checkout" component={CheckoutPage} />
           <Route exact path="/tables" component={Tables} />
+          <Route exact path="/resetpassword" component={ResetPassword} />
         </Switch>
       </BrowserRouter>
     </cartContext.Provider>

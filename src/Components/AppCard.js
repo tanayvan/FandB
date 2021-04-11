@@ -11,11 +11,7 @@ export default function AppCard({
   quantity,
 }) {
   return (
-    <Card style={{ maxWidth: "100%" }}>
-      {/* <CardMedia
-        style={{ width: "100%" }}
-        image="https://images.all-free-download.com/images/graphicthumb/coffee_time_513817.jpg"
-      /> */}
+    <Card style={{ maxWidth: "100%", width: "-webkit-fill-available" }}>
       <img
         src={photo}
         height={250}
