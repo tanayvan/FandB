@@ -53,8 +53,8 @@ export const getAllCities = () => {
     })
     .catch((err) => console.log(err));
 };
-export const getAllBranches = () => {
-  return fetch(`${API}/branches`, {
+export const getAllBranches = (city) => {
+  return fetch(`${API}/branches/${city}`, {
     method: "GET",
   })
     .then((response) => {
@@ -209,6 +209,21 @@ export const resetPassword = (api, body) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const deleteApiCall = (api, token) => {
+  return fetch(`${API}${api}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   })
     .then((response) => {
       return response.json();

@@ -5,14 +5,14 @@ import {
   MenuItem,
   Select,
 } from "@material-ui/core";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Footer from "../Components/Footer";
 import FormikForm from "../Components/FormikForm";
 import FormInput from "../Components/FormInput";
 import FormSubmit from "../Components/FormSubmit";
 import Navbar2 from "../Components/Navbar2";
 import * as yup from "yup";
-import { getAllCategories, createProduct } from "../Helper/apicalls";
+import { createProduct } from "../Helper/apicalls";
 import cartContext from "../context";
 import NotAdmin from "../Components/NotAdmin";
 import ErrorText from "../Components/ErrorText";
@@ -21,8 +21,7 @@ export default function AddProduct() {
   const [category, setCategory] = useState("");
   const [photo, setPhoto] = useState({});
   const [error, setError] = useState("");
-  const { user } = useContext(cartContext);
-  const [categoryList, setCategoryList] = useState([]);
+  const { user, categories, setProducts, products } = useContext(cartContext);
   const [loading, setLoading] = useState(false);
 
   const Schema = yup.object().shape({
@@ -43,26 +42,19 @@ export default function AddProduct() {
     formdata.append("category", category);
     formdata.append("photo", photo);
     createProduct(user.id, user.token, formdata).then((data) => {
-      console.log(data);
       if (data.error) {
         setError(data.error);
         setLoading(false);
         return;
       }
       resetForm();
+      let update = [...products];
+      update.push(data.product);
+      setProducts(update);
       setLoading(false);
       showSuccess();
     });
   };
-  useEffect(() => {
-    getAllCategories().then((data) => {
-      if (!data.error) {
-        setCategoryList(data);
-      } else {
-        console.log(data.error);
-      }
-    });
-  }, []);
 
   if (!user || user.role === 0) {
     return <NotAdmin />;
@@ -163,7 +155,7 @@ export default function AddProduct() {
                 label="Category"
                 placeholder="Category"
               >
-                {categoryList.map((text, index) => (
+                {categories.map((text, index) => (
                   <MenuItem key={index.toString()} value={text._id}>
                     {text.name}
                   </MenuItem>

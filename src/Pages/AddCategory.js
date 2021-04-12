@@ -1,4 +1,4 @@
-import { Container } from "@material-ui/core";
+import { Container, Grid, List } from "@material-ui/core";
 import React, { useContext, useState } from "react";
 import Footer from "../Components/Footer";
 import FormikForm from "../Components/FormikForm";
@@ -8,14 +8,15 @@ import Navbar2 from "../Components/Navbar2";
 import * as yup from "yup";
 import cartContext from "../context";
 import ErrorText from "../Components/ErrorText";
-import { postACategory } from "../Helper/apicalls";
+import { postACategory, deleteApiCall } from "../Helper/apicalls";
 import NotAdmin from "../Components/NotAdmin";
+import Listitem from "../Components/Listitem";
 
 export default function AddCategory() {
   const Schema = yup.object().shape({
     category: yup.string().required().min(3),
   });
-  const { user } = useContext(cartContext);
+  const { user, categories, setCategories } = useContext(cartContext);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,10 +31,30 @@ export default function AddCategory() {
         setLoading(false);
       } else {
         resetForm();
+        let update = [...categories];
+        update.push(data.category);
+        setCategories(update);
         setLoading(false);
         showSuccess();
       }
     });
+  };
+
+  const handleDelete = async (id) => {
+    await deleteApiCall(`/category/${id}/${user.id}`, user.token).then(
+      (data) => {
+        if (data.error) {
+          console.log("Error deleting product", data.error);
+
+          return;
+        }
+        console.log(data);
+        let update = categories.filter(function (obj) {
+          return obj._id !== id;
+        });
+        setCategories(update);
+      }
+    );
   };
 
   if (!user || user.role === 0) {
@@ -48,14 +69,14 @@ export default function AddCategory() {
         backgroundAttachment: "fixed",
         display: "flex",
         flexFlow: "column",
-        height: "100%",
+        height: categories.length > 5 ? "auto" : "100%",
         // backgroundSize: ,
       }}
     >
       <Navbar2 />
       <div style={{ flexGrow: 1, margin: "20px 0px" }}>
         <Container
-          maxWidth="xs"
+          maxWidth="md"
           style={{
             textAlign: "center",
             backgroundColor: "#F4F4F4",
@@ -63,31 +84,46 @@ export default function AddCategory() {
           }}
         >
           <p style={{ fontSize: 25 }}>Add Category</p>
-          {/* <br /> */}
-          {/* <p style={{ fontSize: 14 }}>Login with your mobile no.</p> */}
-          <ErrorText visible={error} error={error} />
-          <FormikForm
-            successMessage="Category Added Successfully"
-            initialValues={{
-              category: "",
-            }}
-            validationSchema={Schema}
-            onSubmit={(values, { resetForm }, showSuccess) => {
-              handleSubmit(values, resetForm, showSuccess);
-            }}
-          >
-            <FormInput
-              feildName="category"
-              placeholder="Category"
-              variant="outlined"
-              fullWidth
-              label="category"
-            />
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <List
+                dense={true}
+                style={{ backgroundColor: "white", borderRadius: 5 }}
+              >
+                {categories.map((category, index) => (
+                  <Listitem
+                    key={index.toString()}
+                    text={category.name}
+                    icon="location_city"
+                    onClick={() => handleDelete(category._id)}
+                  />
+                ))}
+              </List>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <ErrorText visible={error} error={error} />
+              <FormikForm
+                successMessage="Category Added Successfully"
+                initialValues={{
+                  category: "",
+                }}
+                validationSchema={Schema}
+                onSubmit={(values, { resetForm }, showSuccess) => {
+                  handleSubmit(values, resetForm, showSuccess);
+                }}
+              >
+                <FormInput
+                  feildName="category"
+                  placeholder="Category"
+                  variant="outlined"
+                  fullWidth
+                  label="category"
+                />
 
-            <FormSubmit loading={loading}>Submit</FormSubmit>
-          </FormikForm>
-
-          <br />
+                <FormSubmit loading={loading}>Submit</FormSubmit>
+              </FormikForm>
+            </Grid>
+          </Grid>
         </Container>
       </div>
       <Footer />

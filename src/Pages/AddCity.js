@@ -1,12 +1,14 @@
-import { Container } from "@material-ui/core";
+import { Container, Grid, List } from "@material-ui/core";
 import React, { useContext, useState } from "react";
+import { postACity, deleteApiCall } from "../Helper/apicalls";
+import Listitem from "../Components/Listitem";
+import * as yup from "yup";
+
 import Footer from "../Components/Footer";
 import FormikForm from "../Components/FormikForm";
 import FormInput from "../Components/FormInput";
 import FormSubmit from "../Components/FormSubmit";
 import Navbar2 from "../Components/Navbar2";
-import * as yup from "yup";
-import { postACity } from "../Helper/apicalls";
 import cartContext from "../context";
 import ErrorText from "../Components/ErrorText";
 import NotAdmin from "../Components/NotAdmin";
@@ -15,9 +17,24 @@ export default function AddCity() {
   const Schema = yup.object().shape({
     city: yup.string().required().min(3),
   });
-  const { user } = useContext(cartContext);
+  const { user, cities, setCities } = useContext(cartContext);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const handleDelete = async (id) => {
+    await deleteApiCall(`/city/${id}/${user.id}`, user.token).then((data) => {
+      if (data.error) {
+        console.log("Error deleting product", data.error);
+
+        return;
+      }
+      console.log(data);
+      let update = cities.filter(function (obj) {
+        return obj._id !== id;
+      });
+      setCities(update);
+    });
+  };
 
   const handleSubmit = (values, resetForm, showSuccess) => {
     setLoading(true);
@@ -32,6 +49,9 @@ export default function AddCity() {
           setLoading(false);
         } else {
           resetForm();
+          let update = [...cities];
+          update.push(data.city);
+          setCities(update);
           setLoading(false);
           showSuccess();
         }
@@ -51,7 +71,7 @@ export default function AddCity() {
         backgroundAttachment: "fixed",
         display: "flex",
         flexFlow: "column",
-        height: "100%",
+        height: cities.length > 4 ? "auto" : "100%",
         // backgroundSize: ,
       }}
     >
@@ -59,38 +79,54 @@ export default function AddCity() {
 
       <div style={{ flexGrow: 1, margin: "20px 0px" }}>
         <Container
-          maxWidth="xs"
+          maxWidth="md"
           style={{
             textAlign: "center",
             backgroundColor: "#F4F4F4",
             border: "1px solid #e8e8e8",
           }}
         >
-          <p style={{ fontSize: 25 }}>Add Product</p>
+          <p style={{ fontSize: 25 }}>Cities</p>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <List
+                dense={true}
+                style={{ backgroundColor: "white", borderRadius: 5 }}
+              >
+                {cities.map((city, index) => (
+                  <Listitem
+                    key={index.toString()}
+                    text={city.name}
+                    icon="location_city"
+                    onClick={() => handleDelete(city._id)}
+                  />
+                ))}
+              </List>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <ErrorText visible={error} error={error} />
+              <FormikForm
+                successMessage="City Addes Successfully"
+                initialValues={{
+                  city: "",
+                }}
+                validationSchema={Schema}
+                onSubmit={(values, { resetForm }, showSuccess) => {
+                  handleSubmit(values, resetForm, showSuccess);
+                }}
+              >
+                <FormInput
+                  feildName="city"
+                  placeholder="City name"
+                  variant="outlined"
+                  fullWidth
+                  label="City"
+                />
 
-          <ErrorText visible={error} error={error} />
-          <FormikForm
-            successMessage="City Addes Successfully"
-            initialValues={{
-              city: "",
-            }}
-            validationSchema={Schema}
-            onSubmit={(values, { resetForm }, showSuccess) => {
-              handleSubmit(values, resetForm, showSuccess);
-            }}
-          >
-            <FormInput
-              feildName="city"
-              placeholder="City name"
-              variant="outlined"
-              fullWidth
-              label="City"
-            />
-
-            <FormSubmit loading={loading}>Submit</FormSubmit>
-          </FormikForm>
-
-          <br />
+                <FormSubmit loading={loading}>Add City</FormSubmit>
+              </FormikForm>
+            </Grid>
+          </Grid>
         </Container>
       </div>
       <Footer />

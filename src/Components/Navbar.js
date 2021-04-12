@@ -27,60 +27,52 @@ import {
 import { Alert, ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 import cartContext from "../context";
-import { getAllBranches, getAllCities } from "../Helper/apicalls";
+import { getAllBranches } from "../Helper/apicalls";
 
 export default function Navbar() {
-  const { cart, setOrderType, orderType, user, setUser } = useContext(
+  const { cart, setOrderType, orderType, user, setUser, cities } = useContext(
     cartContext
   );
-  useEffect(() => {
-    getAllCities()
-      .then((data) => {
-        if (data.error) {
-          console.log(data);
-        } else {
-          let city = [];
-          data.forEach((c) => {
-            city.push(c.name);
-          });
 
-          setCities(city);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    getAllBranches().then((data) => {
-      if (data.error) {
-      } else {
-        let branch = [];
-        data.forEach((c) => {
-          branch.push({
-            name: c.name,
-            city: c.city.name,
-            table: c.tables,
-            reserved: c.reserved_table,
-          });
-        });
-
-        console.log(branch);
-        setBranch(branch);
-      }
-    });
-  }, []);
   const [showSideBar, setShowSideBar] = useState(false);
   const [placeButton, setPlaceButton] = useState(
-    orderType ? orderType.city : "New Delhi"
+    orderType ? orderType.city : cities[0].name
   );
   const [selectValue, setSelectValue] = useState(
     orderType ? orderType.branch : ""
   );
   const [showTopDrawer, setShowTopDrawer] = useState(!orderType);
   const [showError, setShowError] = useState(false);
-  const [cities, setCities] = useState([]);
+
   const [branch, setBranch] = useState([]);
   const [order, setOrder] = useState(orderType ? orderType.type : "Take Away");
   const history = useHistory();
+
+  useEffect(() => {
+    if (cities.length > 0) {
+      let city = cities.find((x) => x.name === placeButton);
+      console.log("r", city._id);
+      getAllBranches(city._id).then((data) => {
+        console.log(data);
+        if (data.error) {
+        } else {
+          let branch = [];
+          data.forEach((c) => {
+            branch.push({
+              name: c.name,
+              city: c.city.name,
+              table: c.tables,
+              reserved: c.reserved_table,
+            });
+          });
+
+          console.log(branch);
+          setBranch(branch);
+        }
+      });
+    }
+  }, [placeButton, cities]);
+
   const list = () => (
     <div
       style={{
@@ -169,23 +161,23 @@ export default function Navbar() {
             </ListItem>
             <ListItem
               button
-              key={"Add Branch"}
+              key={"Branches"}
               onClick={() => history.push("/addbranch")}
             >
               <ListItemIcon>
-                <Icon>library_add</Icon>
+                <Icon>store</Icon>
               </ListItemIcon>
-              <ListItemText primary={"Add Branch"} />
+              <ListItemText primary={"Branches"} />
             </ListItem>
             <ListItem
               button
-              key={"Add City"}
+              key={"Cities"}
               onClick={() => history.push("/addcity")}
             >
               <ListItemIcon>
-                <Icon>post_add</Icon>
+                <Icon>location_city</Icon>
               </ListItemIcon>
-              <ListItemText primary={"Add City"} />
+              <ListItemText primary={"Cities"} />
             </ListItem>
             <ListItem
               button
@@ -193,13 +185,13 @@ export default function Navbar() {
               onClick={() => history.push("/addcategory")}
             >
               <ListItemIcon>
-                <Icon>post_add</Icon>
+                <Icon>category</Icon>
               </ListItemIcon>
-              <ListItemText primary={"Add Category"} />
+              <ListItemText primary={"Categories"} />
             </ListItem>
             <ListItem
               button
-              key={"Tables"}
+              key={"Categories"}
               onClick={() => history.push("/tables")}
             >
               <ListItemIcon>
@@ -282,7 +274,7 @@ export default function Navbar() {
           {cities.map((text, index) => (
             <ToggleButton
               key={text}
-              value={text}
+              value={text.name}
               aria-label="left aligned"
               style={{
                 textTransform: "capitalize",
@@ -293,7 +285,7 @@ export default function Navbar() {
                 // margin: 20,
               }}
             >
-              {text}
+              {text.name}
             </ToggleButton>
           ))}
         </ToggleButtonGroup>

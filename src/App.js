@@ -13,7 +13,11 @@ import MyOrdersPage from "./Pages/MyOrdersPage";
 import CheckoutPage from "./Pages/CheckoutPage";
 import Tables from "./Pages/Tables";
 import ResetPassword from "./Pages/ResetPassword";
-import { getAllProducts } from "./Helper/apicalls";
+import {
+  getAllProducts,
+  getAllCities,
+  getAllCategories,
+} from "./Helper/apicalls";
 import OrderPlaced from "./Pages/OrderPlaced";
 
 export default function App() {
@@ -33,10 +37,30 @@ export default function App() {
       : null
   );
   const [products, setProducts] = useState();
+  const [cities, setCities] = useState([]);
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     if (!localStorage.getItem("cart")) {
       localStorage.setItem("cart", JSON.stringify([]));
     }
+    getAllCities()
+      .then((data) => {
+        if (data.error) {
+          console.log(data);
+        } else {
+          setCities(data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    getAllCategories().then((data) => {
+      if (!data.error) {
+        setCategories(data);
+      } else {
+        console.log(data.error);
+      }
+    });
     if (orderType && orderType.branch) {
       getAllProducts().then((data) => {
         if (data.error) {
@@ -58,6 +82,11 @@ export default function App() {
         user,
         setUser,
         products,
+        setProducts,
+        cities,
+        setCities,
+        categories,
+        setCategories,
       }}
     >
       <BrowserRouter>

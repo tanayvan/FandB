@@ -7,7 +7,7 @@ import AppCard from "./AppCard";
 import CustomizeItemModal from "./CustomizeItemModal";
 
 export default function Home() {
-  const { cart, products } = useContext(cartContext);
+  const { cart, products, user } = useContext(cartContext);
   const [cartModalVisible, setCartModalVisible] = useState(false);
   const [selected, setSelected] = useState(0);
 
@@ -49,10 +49,8 @@ export default function Home() {
                       setCartModalVisible(true);
                     }}
                     quantity={no}
-                    title={product.name}
-                    subtitle={product.description}
-                    photo={product.photo}
-                    price={product.price}
+                    product={product}
+                    admin={user ? user.role : 0}
                   />
                 </Grid>
               );
