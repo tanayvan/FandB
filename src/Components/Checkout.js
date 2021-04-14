@@ -25,7 +25,7 @@ const isReserved = (table, number) => {
   return value;
 };
 export default function Checkout() {
-  const { cart, orderType, user, setCart } = useContext(cartContext);
+  const { cart, orderType, user, setCart, cities } = useContext(cartContext);
   const [total, setTotal] = useState(0);
   const [isSuccess, setIsSuccess] = useState(false);
   const [branchDetails, setBranchDetails] = useState();
@@ -98,7 +98,7 @@ export default function Checkout() {
     await createOrder(user.id, user.token, body)
       .then((data) => {
         if (!data.error) {
-          localStorage.setItem("cart", JSON.stringify([]));
+          localStorage.setItem("updatedCart", JSON.stringify([]));
           setCart([]);
           setIsSuccess(true);
 
@@ -122,7 +122,8 @@ export default function Checkout() {
     setTotal(total);
   }, [cart]);
   useEffect(() => {
-    getAllBranches()
+    let city = cities.find((x) => x.name === orderType.city);
+    getAllBranches(city._id)
       .then((data) => {
         data.forEach((d) => {
           if (d.name === orderType.branch) {
@@ -133,7 +134,7 @@ export default function Checkout() {
       .catch((err) => {
         console.log(err);
       });
-  }, [orderType.branch]);
+  }, [orderType, cities]);
   const onTableSelect = (index) => {
     console.log(index + 1);
     setTabelNo(index);

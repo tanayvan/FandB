@@ -38,3 +38,7 @@
   border: 1px solid #e8e8e8;
   padding: 10px;
 }
+
+.activeCategory {
+  border-bottom: 3px solid orange;
+}

@@ -35,7 +35,7 @@ export default function Login() {
       }
       console.log(data);
       localStorage.setItem(
-        "user",
+        "userData",
         JSON.stringify({
           token: data.token,
           name: data.user.name,

@@ -1,25 +1,27 @@
 import { Container } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import cartContext from "../context";
-import { getUserOrders } from "../Helper/apicalls";
+import { getAdminOrders } from "../Helper/apicalls";
 import Order from "./Order";
 
-export default function MyOrders({ setLoading, loading }) {
-  const { user } = useContext(cartContext);
+export default function Adminorders({ loading, setLoading }) {
+  const [orders, setOrders] = useState([]);
+
+  const { user, orderType } = useContext(cartContext);
 
   useEffect(() => {
-    setLoading(true);
-    getUserOrders(user.id, user.token)
-      .then((data) => {
-        setOrders(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, [user, setLoading]);
-  const [orders, setOrders] = useState([]);
+    getAdminOrders(user.id, user.token).then((data) => {
+      if (data.error) {
+        console.log("error getting orders", data.message, user);
+        return;
+      }
+      const filtered = data.filter((e) => e.branch === orderType.branch);
+      console.log(filtered);
+      setOrders(filtered);
+      setLoading(false);
+    });
+  }, [orderType, setLoading, user]);
+
   return (
     <div
       style={{
@@ -35,9 +37,10 @@ export default function MyOrders({ setLoading, loading }) {
             className="textCenter"
             style={{ fontSize: 25, maring: "10px 0px" }}
           >
-            My Orders
+            Orders Of Branch {orderType.branch}
           </p>
         )}
+
         {orders
           .slice(0)
           .reverse()

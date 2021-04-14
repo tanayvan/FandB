@@ -3,7 +3,16 @@ import React, { useContext } from "react";
 import cartContext from "../context";
 import OrderItem from "./OrderItem";
 
-export default function Order({ branch, type, amount, date, items, table }) {
+export default function Order({
+  branch,
+  type,
+  amount,
+  date,
+  items,
+  table,
+  payment,
+  instructions,
+}) {
   const { products } = useContext(cartContext);
 
   return (
@@ -30,6 +39,14 @@ export default function Order({ branch, type, amount, date, items, table }) {
           <Grid item xs={6} sm={3}>
             <div style={{ fontSize: 14, color: "grey" }}>Total</div>
             <div style={{ fontWeight: "bold" }}> &#8377; {amount}</div>
+          </Grid>
+          <Grid item xs={6}>
+            <div style={{ fontSize: 14, color: "grey" }}>Payment</div>
+            <div>{payment}</div>
+          </Grid>
+          <Grid item xs={6}>
+            <div style={{ fontSize: 14, color: "grey" }}>Instructions</div>
+            <div>{instructions !== "false" ? instructions : "NA"}</div>
           </Grid>
         </Grid>
       </div>

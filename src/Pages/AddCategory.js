@@ -94,7 +94,7 @@ export default function AddCategory() {
                   <Listitem
                     key={index.toString()}
                     text={category.name}
-                    icon="location_city"
+                    icon="category"
                     onClick={() => handleDelete(category._id)}
                   />
                 ))}

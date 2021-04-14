@@ -14,20 +14,22 @@ import {
 } from "../Helper/apicalls";
 
 export default function Tables() {
-  const { orderType, user } = useContext(cartContext);
+  const { orderType, user, cities } = useContext(cartContext);
 
   const [reservedTables, setReservedTables] = useState([]);
 
   const [branchDetails, setBranchDetails] = useState();
 
   useEffect(() => {
-    getAllBranches()
+    let city = cities.find((x) => x.name === orderType.city);
+
+    getAllBranches(city._id)
       .then((data) => {
-        console.log(orderType);
+        console.log("data", data);
         data.forEach((d) => {
           if (d.name === orderType.branch) {
             setBranchDetails(d);
-
+            console.log("d", d);
             setReservedTables(d.reserved_table);
           }
         });
@@ -35,7 +37,7 @@ export default function Tables() {
       .catch((err) => {
         console.log(err);
       });
-  }, [orderType]);
+  }, [orderType, cities]);
 
   const handleunReserve = async (tabelNo) => {
     await UnReserveATable(

@@ -46,6 +46,7 @@ export default function AppCard({
         maxWidth: "100%",
         width: "-webkit-fill-available",
         position: "relative",
+        zIndex: 1,
       }}
     >
       <div style={{ opacity: loading ? 0.5 : 1 }}>

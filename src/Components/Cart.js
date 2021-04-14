@@ -67,7 +67,7 @@ export default function Cart() {
               ))}
             </Grid>
             <Grid item xs={12} sm={4}>
-              <div className="cartBox" style={{ fontSize: 14 }}>
+              {/* <div className="cartBox" style={{ fontSize: 14 }}>
                 INSTRUCTIONS
               </div>
               <div className="cartBox">
@@ -75,11 +75,8 @@ export default function Cart() {
                   placeholder="Add Instructions"
                   style={{ border: "none", outline: "none" }}
                 />
-              </div>
-              <div
-                className="cartBox"
-                style={{ margin: "10px 0px 0px 0px ", fontSize: 14 }}
-              >
+              </div> */}
+              <div className="cartBox" style={{ fontSize: 14 }}>
                 {`PRICE DETAIL`}
               </div>
               <div className="cartBox">

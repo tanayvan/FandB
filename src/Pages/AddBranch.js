@@ -122,11 +122,12 @@ export default function AddBranch() {
                 dense={true}
                 style={{ backgroundColor: "white", borderRadius: 5 }}
               >
+                {branches.length === 0 && <div>NA</div>}
                 {branches.map((branch, index) => (
                   <Listitem
                     key={index.toString()}
                     text={branch.name}
-                    icon="location_city"
+                    icon="store_front"
                     onClick={() => handleDelete(branch._id)}
                   />
                 ))}

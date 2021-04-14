@@ -8,9 +8,9 @@ export default function CartItem({ item, index }) {
   const { cart, setCart } = useContext(cartContext);
   const [quantity, setQuantity] = useState(item.quantity);
   const handleRemove = () => {
-    let cart = JSON.parse(localStorage.getItem("cart"));
+    let cart = JSON.parse(localStorage.getItem("updatedCart"));
     cart.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("updatedCart", JSON.stringify(cart));
     setCart(cart);
   };
   const addQuantity = () => {
@@ -19,7 +19,7 @@ export default function CartItem({ item, index }) {
     cart_data[index].quantity = cart_data[index].quantity + 1;
     setQuantity(quantity + 1);
 
-    localStorage.setItem("cart", JSON.stringify(cart_data));
+    localStorage.setItem("updatedCart", JSON.stringify(cart_data));
     setCart(cart_data);
   };
   const removeQuantity = () => {
@@ -34,7 +34,7 @@ export default function CartItem({ item, index }) {
 
       setQuantity(quantity - 1);
 
-      localStorage.setItem("cart", JSON.stringify(cart_data));
+      localStorage.setItem("updatedCart", JSON.stringify(cart_data));
       setCart(cart_data);
     }
   };

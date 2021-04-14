@@ -18,7 +18,7 @@ export default function CustomizeItemModal({
   const [milk, setMilk] = useState("Regular");
   const { setCart } = useContext(cartContext);
   const handleAddToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart"));
+    const cart = JSON.parse(localStorage.getItem("updatedCart"));
     // {
     //     product: product,
     //     size: size,
@@ -36,7 +36,7 @@ export default function CustomizeItemModal({
         cart.quantity = cart.quantity + 1;
         setCart(cart);
         isPresent = true;
-        localStorage.setItem("cart", JSON.stringify(cart));
+        localStorage.setItem("updatedCart", JSON.stringify(cart));
         return;
       }
     });
@@ -49,7 +49,7 @@ export default function CustomizeItemModal({
         quantity: 1,
       });
     setCart(cart);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("updatedCart", JSON.stringify(cart));
     closeModal();
   };
 

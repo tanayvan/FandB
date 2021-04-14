@@ -16,6 +16,8 @@
     "react-otp-input": "^2.3.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-scrollspy": "^3.4.3",
+    "react-scrollspy-nav": "^1.2.4",
     "react-stripe-checkout": "^2.6.3",
     "sass": "^1.32.8",
     "swiper": "^6.5.6",

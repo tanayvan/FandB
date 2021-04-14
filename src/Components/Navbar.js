@@ -29,7 +29,7 @@ import { useHistory } from "react-router-dom";
 import cartContext from "../context";
 import { getAllBranches } from "../Helper/apicalls";
 
-export default function Navbar() {
+export default function Navbar(props) {
   const { cart, setOrderType, orderType, user, setUser, cities } = useContext(
     cartContext
   );
@@ -51,7 +51,7 @@ export default function Navbar() {
   useEffect(() => {
     if (cities.length > 0) {
       let city = cities.find((x) => x.name === placeButton);
-      console.log("r", city._id);
+
       getAllBranches(city._id).then((data) => {
         console.log(data);
         if (data.error) {
@@ -65,13 +65,19 @@ export default function Navbar() {
               reserved: c.reserved_table,
             });
           });
-
-          console.log(branch);
           setBranch(branch);
+          if (
+            orderType &&
+            data.filter((e) => e.name === orderType.branch).length < 1
+          ) {
+            setOrderType("");
+            localStorage.setItem("orderType", JSON.stringify(""));
+            setShowTopDrawer(true);
+          }
         }
       });
     }
-  }, [placeButton, cities]);
+  }, [placeButton, cities, setOrderType, orderType]);
 
   const list = () => (
     <div
@@ -136,7 +142,7 @@ export default function Navbar() {
             key={"Logout"}
             onClick={() => {
               setUser(null);
-              localStorage.setItem("user", JSON.stringify(""));
+              localStorage.setItem("userData", JSON.stringify(""));
             }}
           >
             <ListItemIcon>
@@ -149,6 +155,16 @@ export default function Navbar() {
         {user && user.role === 1 && (
           <>
             <Divider />
+            <ListItem
+              button
+              key={"Orders"}
+              onClick={() => history.push("/orders")}
+            >
+              <ListItemIcon>
+                <Icon>list_alt</Icon>
+              </ListItemIcon>
+              <ListItemText primary={"Orders"} />
+            </ListItem>
             <ListItem
               button
               key={"AddProduct"}
@@ -353,14 +369,34 @@ export default function Navbar() {
 
   return (
     <>
+      {showError && (!orderType || !orderType.branch) && (
+        <div
+          style={{
+            bottom: 0,
+            width: "100%",
+            zindex: 2,
+          }}
+        >
+          <Alert severity="warning" variant="filled">
+            Please select city and branch
+          </Alert>
+        </div>
+      )}
+
       <div style={{ flexGrow: 1 }}>
-        <AppBar position="static" style={{ backgroundColor: "#5E7E47" }}>
+        <AppBar
+          position="sticky"
+          style={{
+            backgroundColor: "#5E7E47",
+            // position: "absolute",
+            // top: 0,
+          }}
+        >
           <Toolbar>
             <Box mr={3}>
               <IconButton
                 style={{ marginInline: 5 }}
                 edge="start"
-                // className={classes.menuButton}
                 color="inherit"
                 aria-label="menu"
                 onClick={() => setShowSideBar(true)}
@@ -413,11 +449,18 @@ export default function Navbar() {
           </Toolbar>
         </AppBar>
       </div>
+
       <div>
         <React.Fragment key={"left"}>
           {/* <Button onClick={() => setShowSideBar(true)}>Left</Button> */}
           <Drawer
-            style={{ display: "flex", flexFlow: "column", height: "100%" }}
+            style={{
+              display: "flex",
+              flexFlow: "column",
+              height: "100%",
+              // position: "fixed",
+              top: 30,
+            }}
             anchor={"left"}
             open={showSideBar}
             onClose={() => setShowSideBar(false)}
@@ -438,19 +481,6 @@ export default function Navbar() {
           </Drawer>
         </React.Fragment>
       </div>
-      {showError && (!orderType || !orderType.branch) && (
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-          }}
-        >
-          <Alert severity="warning" variant="filled">
-            Please select city and branch
-          </Alert>
-        </div>
-      )}
     </>
   );
 }
