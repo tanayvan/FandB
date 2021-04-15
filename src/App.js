@@ -66,7 +66,7 @@ export default function App() {
         })
         .then((data) => {
           // console.log("app", orderType);
-          if (data.filter((e) => e.name === orderType.city).length < 1) {
+          if (orderType && orderType.city && data.filter((e) => e.name === orderType.city).length < 1) {
             setOrderType("");
             localStorage.setItem("orderType", JSON.stringify(""));
           }
