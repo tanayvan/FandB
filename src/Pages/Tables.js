@@ -25,11 +25,9 @@ export default function Tables() {
 
     getAllBranches(city._id)
       .then((data) => {
-        console.log("data", data);
         data.forEach((d) => {
           if (d.name === orderType.branch) {
             setBranchDetails(d);
-            console.log("d", d);
             setReservedTables(d.reserved_table);
           }
         });

@@ -43,14 +43,14 @@ export default function Login() {
           id: data.user._id,
         })
       );
+      setLoading(false);
+      setRedirect(true);
       setUser({
         token: data.token,
         name: data.user.name,
         role: data.user.role,
         id: data.user._id,
       });
-      setLoading(false);
-      setRedirect(true);
     });
   };
   if (redirect) {

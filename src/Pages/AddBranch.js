@@ -26,7 +26,7 @@ export default function AddBranch() {
     tables: yup.number().required(),
   });
 
-  const { user, cities } = useContext(cartContext);
+  const { user, cities, orderType, setOrderType } = useContext(cartContext);
   const [city, setCity] = useState(cities[0] ? cities[0]._id : "");
   const [branches, setBranches] = useState([]);
 
@@ -74,19 +74,24 @@ export default function AddBranch() {
       .catch((err) => console.log(err));
   };
 
-  const handleDelete = async (id) => {
-    await deleteApiCall(`/branch/${id}/${user.id}`, user.token).then((data) => {
-      if (data.error) {
-        console.log("Error deleting product", data.error);
+  const handleDelete = async (branch) => {
+    await deleteApiCall(`/branch/${branch._id}/${user.id}`, user.token).then(
+      (data) => {
+        if (data.error) {
+          console.log("Error deleting product", data.error);
 
-        return;
+          return;
+        }
+        if (branch.name === orderType.branch) {
+          setOrderType("");
+          localStorage.setItem("orderType", JSON.stringify(""));
+        }
+        let update = branches.filter(function (obj) {
+          return obj._id !== branch._id;
+        });
+        setBranches(update);
       }
-      console.log(data);
-      let update = branches.filter(function (obj) {
-        return obj._id !== id;
-      });
-      setBranches(update);
-    });
+    );
   };
 
   if (!user || user.role === 0) {
@@ -128,7 +133,7 @@ export default function AddBranch() {
                     key={index.toString()}
                     text={branch.name}
                     icon="store_front"
-                    onClick={() => handleDelete(branch._id)}
+                    onClick={() => handleDelete(branch)}
                   />
                 ))}
               </List>

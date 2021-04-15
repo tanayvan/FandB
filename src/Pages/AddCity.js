@@ -17,23 +17,31 @@ export default function AddCity() {
   const Schema = yup.object().shape({
     city: yup.string().required().min(3),
   });
-  const { user, cities, setCities } = useContext(cartContext);
+  const { user, cities, setCities, orderType, setOrderType } = useContext(
+    cartContext
+  );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleDelete = async (id) => {
-    await deleteApiCall(`/city/${id}/${user.id}`, user.token).then((data) => {
-      if (data.error) {
-        console.log("Error deleting product", data.error);
+  const handleDelete = async (city) => {
+    await deleteApiCall(`/city/${city._id}/${user.id}`, user.token).then(
+      (data) => {
+        if (data.error) {
+          console.log("Error deleting product", data.error);
 
-        return;
+          return;
+        }
+        console.log(data);
+        if (city.name === orderType.city) {
+          setOrderType("");
+          localStorage.setItem("orderType", JSON.stringify(""));
+        }
+        let update = cities.filter(function (obj) {
+          return obj._id !== city._id;
+        });
+        setCities(update);
       }
-      console.log(data);
-      let update = cities.filter(function (obj) {
-        return obj._id !== id;
-      });
-      setCities(update);
-    });
+    );
   };
 
   const handleSubmit = (values, resetForm, showSuccess) => {
@@ -93,12 +101,13 @@ export default function AddCity() {
                 dense={true}
                 style={{ backgroundColor: "white", borderRadius: 5 }}
               >
+                {cities.lenth === 0 && <div>NA</div>}
                 {cities.map((city, index) => (
                   <Listitem
                     key={index.toString()}
                     text={city.name}
                     icon="location_city"
-                    onClick={() => handleDelete(city._id)}
+                    onClick={() => handleDelete(city)}
                   />
                 ))}
               </List>

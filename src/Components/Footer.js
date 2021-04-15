@@ -10,12 +10,12 @@ export default function Footer() {
         <Grid container spacing={3} style={{ paddingBlock: 20 }}>
           <Grid item xs={12} sm={6}>
             <p>
-              <Link>About Us</Link>
+              <Link to="/about">About Us</Link>
             </p>
             <p>
-              <Link>Contact Us</Link>
+              <Link to="/">Contact Us</Link>
             </p>
-            <Link>Terms &amp; Conditions</Link>
+            <Link to="/">Terms &amp; Conditions</Link>
           </Grid>
           <Grid
             item

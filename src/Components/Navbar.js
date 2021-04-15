@@ -30,13 +30,19 @@ import cartContext from "../context";
 import { getAllBranches } from "../Helper/apicalls";
 
 export default function Navbar(props) {
-  const { cart, setOrderType, orderType, user, setUser, cities } = useContext(
-    cartContext
-  );
+  const {
+    cart,
+    setOrderType,
+    orderType,
+    user,
+    setUser,
+    cities,
+    setCart,
+  } = useContext(cartContext);
 
   const [showSideBar, setShowSideBar] = useState(false);
   const [placeButton, setPlaceButton] = useState(
-    orderType ? orderType.city : cities[0].name
+    orderType ? orderType.city : cities[0] ? cities[0].name : ""
   );
   const [selectValue, setSelectValue] = useState(
     orderType ? orderType.branch : ""
@@ -283,7 +289,9 @@ export default function Navbar(props) {
           value={placeButton}
           exclusive
           onChange={(event, value) => {
-            setPlaceButton(value);
+            if (value !== null) {
+              setPlaceButton(value);
+            }
           }}
           aria-label="text alignment"
         >
@@ -333,6 +341,9 @@ export default function Navbar(props) {
                   type: order,
                 })
               );
+              localStorage.setItem("updatedCart", JSON.stringify([]));
+              setCart([]);
+
               setShowTopDrawer(false);
             }}
             label="Branch"

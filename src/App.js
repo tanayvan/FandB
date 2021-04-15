@@ -22,6 +22,7 @@ import {
 import OrderPlaced from "./Pages/OrderPlaced";
 import Lottie from "react-lottie";
 import OrdersPage from "./Pages/OrdersPage";
+import AboutPage from "./Pages/AboutPage";
 
 export default function App() {
   const [cart, setCart] = useState(
@@ -45,12 +46,16 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const getAllData = async () => {
+      let query = user && user.role === 1 ? `?user=${user.id}` : "";
+      // let q = (user && user.role === 1) ? `?user=${user.id}` : order
+
       if (!localStorage.getItem("updatedCart")) {
         localStorage.setItem("updatedCart", JSON.stringify([]));
       }
 
-      await getAllCities()
+      await getAllCities(query)
         .then((data) => {
           if (data.error) {
             console.log(data);
@@ -60,7 +65,7 @@ export default function App() {
           }
         })
         .then((data) => {
-          console.log("app", orderType);
+          // console.log("app", orderType);
           if (data.filter((e) => e.name === orderType.city).length < 1) {
             setOrderType("");
             localStorage.setItem("orderType", JSON.stringify(""));
@@ -70,16 +75,46 @@ export default function App() {
           console.log(err);
         });
 
-      await getAllCategories().then((data) => {
-        if (!data.error) {
-          setCategories(data);
-        } else {
-          console.log(data.error);
-        }
-      });
+      if (user && user.role === 1) {
+        await getAllCategories(query).then((data) => {
+          if (!data.error) {
+            setCategories(data);
+          } else {
+            console.log(data.error);
+          }
+        });
+      }
       setLoading(false);
+    };
+
+    getAllData();
+  }, [user, orderType.city]);
+
+  useEffect(() => {
+    const getProductsAndCategory = async () => {
+      setProducts();
+      let query = "";
+      if (!user || user.role === 0) {
+        let city = cities.find((x) => x.name === orderType.city);
+        console.log("city", city);
+        query = `?user=${city.user_id}`;
+      } else {
+        query = `?user=${user.id}`;
+      }
+
+      if (!user || user.role === 0) {
+        await getAllCategories(query).then((data) => {
+          if (!data.error) {
+            setCategories(data);
+          } else {
+            console.log(data.error);
+          }
+        });
+        setLoading(false);
+      }
+
       if (orderType && orderType.branch) {
-        await getAllProducts().then((data) => {
+        await getAllProducts(query).then((data) => {
           if (data.error) {
             console.log(data.error);
           }
@@ -88,9 +123,10 @@ export default function App() {
         });
       }
     };
-
-    getAllData();
-  }, [orderType]);
+    if (orderType && orderType.city && cities.length > 0) {
+      getProductsAndCategory();
+    }
+  }, [orderType, user, cities]);
 
   if (loading) {
     return (
@@ -150,6 +186,7 @@ export default function App() {
           <Route exact path="/resetpassword" component={ResetPassword} />
           <Route exact path="/orderplaced" component={OrderPlaced} />
           <Route exact path="/orders" component={OrdersPage} />
+          <Route exact path="/about" component={AboutPage} />
         </Switch>
       </BrowserRouter>
     </cartContext.Provider>

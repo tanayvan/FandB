@@ -1,8 +1,8 @@
 //To get Products on HomePage
 export const API = "https://afternoon-thicket-79189.herokuapp.com/api";
 
-export const getAllProducts = () => {
-  return fetch(`${API}/products`, {
+export const getAllProducts = (query) => {
+  return fetch(`${API}/products${query}`, {
     method: "GET",
   })
     .then((response) => {
@@ -44,8 +44,8 @@ export const signup = (body) => {
     });
 };
 
-export const getAllCities = () => {
-  return fetch(`${API}/cities`, {
+export const getAllCities = (query) => {
+  return fetch(`${API}/cities${query}`, {
     method: "GET",
   })
     .then((response) => {
@@ -115,8 +115,8 @@ export const postACategory = (body, userId, token) => {
     });
 };
 
-export const getAllCategories = () => {
-  return fetch(`${API}/categories`, {
+export const getAllCategories = (query) => {
+  return fetch(`${API}/categories${query}`, {
     method: "GET",
   })
     .then((response) => {
@@ -246,4 +246,22 @@ export const getAdminOrders = (userId, token) => {
       return response.json();
     })
     .catch((err) => console.log(err));
+};
+
+export const AlterProduct = (type, branchId, userId, token, body) => {
+  return fetch(`${API}/branch/${branchId}/${userId}/outofstock`, {
+    method: type,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

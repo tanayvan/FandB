@@ -21,7 +21,7 @@ export default function AddProduct() {
   const [category, setCategory] = useState("");
   const [photo, setPhoto] = useState({});
   const [error, setError] = useState("");
-  const { user, categories } = useContext(cartContext);
+  const { user, categories, products, setProducts } = useContext(cartContext);
   const [loading, setLoading] = useState(false);
 
   const Schema = yup.object().shape({
@@ -47,8 +47,11 @@ export default function AddProduct() {
         setLoading(false);
         return;
       }
+      console.log("product", data);
+      let update = [...products];
+      update.push(data);
+      setProducts(update);
       resetForm();
-
       setLoading(false);
       showSuccess();
     });

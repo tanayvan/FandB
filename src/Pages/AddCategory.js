@@ -90,6 +90,7 @@ export default function AddCategory() {
                 dense={true}
                 style={{ backgroundColor: "white", borderRadius: 5 }}
               >
+                {categories.lenth === 0 && <div>NA</div>}
                 {categories.map((category, index) => (
                   <Listitem
                     key={index.toString()}

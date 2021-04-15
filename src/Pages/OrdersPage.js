@@ -7,6 +7,7 @@ import coffeeLoading from "../Config/coffeeLoading.json";
 
 export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
+  const [length, setLength] = useState(0);
 
   return (
     <div
@@ -16,12 +17,16 @@ export default function OrdersPage() {
         backgroundAttachment: "fixed",
         display: "flex",
         flexFlow: "column",
-        height: loading ? "100%" : "auto",
+        height: loading ? "100%" : length > 0 ? "auto" : "100%",
       }}
     >
       <Navbar2 />
-      {/* <MyOrders setLoading={setLoading} loading={loading} /> */}
-      <Adminorders setLoading={setLoading} loading={loading} />
+
+      <Adminorders
+        setLoading={setLoading}
+        loading={loading}
+        setLength={setLength}
+      />
       {loading && (
         <div style={{ flexGrow: 1 }}>
           <Lottie
