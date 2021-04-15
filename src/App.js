@@ -88,7 +88,7 @@ export default function App() {
     };
 
     getAllData();
-  }, [user, orderType.city]);
+  }, [user, orderType]);
 
   useEffect(() => {
     const getProductsAndCategory = async () => {
