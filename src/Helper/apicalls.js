@@ -265,3 +265,36 @@ export const AlterProduct = (type, branchId, userId, token, body) => {
       console.log(err);
     });
 };
+
+export const CancelOrder = (orderId, userid, token) => {
+  return fetch(`${API}/order/cancel/${orderId}/${userid}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const CompletedOrder = (orderId, userId, token, body) => {
+  return fetch(`${API}/order/status/${orderId}/${userId}`, {
+    method: "Post",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

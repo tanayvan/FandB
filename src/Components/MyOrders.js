@@ -76,14 +76,11 @@ export default function MyOrders({ setLoading, loading, setLength }) {
             return (
               <Order
                 key={index.toString()}
-                amount={list.amount}
-                branch={list.branch}
-                type={list.type}
                 date={date}
-                table={list.table}
-                items={list.products}
-                payment={list.payment}
-                instructions={list.instructions}
+                status={list.status}
+                list={list}
+                orders={orders}
+                setOrders={setOrders}
               />
             );
           })}

@@ -59,14 +59,12 @@ export default function Adminorders({ loading, setLoading, setLength }) {
             return (
               <Order
                 key={index.toString()}
-                amount={list.amount}
-                branch={list.branch}
-                type={list.type}
+                list={list}
+                status={list.status}
                 date={date}
-                table={list.table}
-                items={list.products}
-                payment={list.payment}
-                instructions={list.instructions}
+                admin={true}
+                orders={orders}
+                setOrders={setOrders}
               />
             );
           })}
