@@ -12,6 +12,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import Icon from "@material-ui/core/Icon";
 import {
+  Avatar,
   Badge,
   Box,
   Container,
@@ -28,6 +29,7 @@ import { Alert, ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 import cartContext from "../context";
 import { getAllBranches } from "../Helper/apicalls";
+import color from "../Config/Color";
 
 export default function Navbar(props) {
   const {
@@ -97,7 +99,67 @@ export default function Navbar(props) {
       onClick={() => setShowSideBar(false)}
       onKeyDown={() => setShowSideBar(false)}
     >
-      <List style={{ flexGrow: 1 }}>
+      <List style={{ flexGrow: 1, paddingTop: 0 }}>
+        <ListItem
+          key={"user"}
+          style={{
+            backgroundColor: "rgb(211,227,206)",
+            height: 150,
+          }}
+        >
+          <Avatar style={{ margin: "0px 10px 0px 0px ", padding: 0 }}>
+            <Icon style={{ fontSize: 40 }}>account_circle</Icon>
+          </Avatar>
+          {user && (
+            <ListItemText
+              id={"Name"}
+              primary={user.name}
+              secondary={
+                <>
+                  <span>{user.email}</span>
+                  {!user.isEmailVerified && (
+                    <span
+                      onClick={() =>
+                        history.push({
+                          pathname: "/signup",
+                          state: { email: user.email },
+                        })
+                      }
+                      style={{
+                        color: color.green,
+                        cursor: "pointer",
+                        display: "block",
+                      }}
+                    >
+                      {"\nverify email"}
+                    </span>
+                  )}
+                </>
+              }
+            />
+          )}
+
+          {!user && (
+            <span
+              onClick={() => history.push("/login")}
+              style={{
+                color: color.green,
+                cursor: "pointer",
+                fontWeight: "500",
+              }}
+            >
+              login?
+            </span>
+          )}
+          {/* <ListItemSecondaryAction>
+            <Checkbox
+              edge="end"
+              onChange={handleToggle(value)}
+              checked={checked.indexOf(value) !== -1}
+              inputProps={{ "aria-labelledby": labelId }}
+            />
+          </ListItemSecondaryAction> */}
+        </ListItem>
         <ListItem button key={"Home"}>
           <ListItemIcon>
             <Icon>home</Icon>

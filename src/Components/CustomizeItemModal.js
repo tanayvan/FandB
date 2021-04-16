@@ -84,7 +84,11 @@ export default function CustomizeItemModal({
           </div>
           <div style={{ alignSelf: "center" }}>
             <div style={{ textAlign: "center" }}>
-              &#8377; {price * itemQuantity}
+              &#8377;{" "}
+              {price *
+                itemQuantity *
+                (size === "Full" ? 2 : 1) *
+                (size === "Kitli" ? 4 : 1)}
             </div>
             <div
               style={{

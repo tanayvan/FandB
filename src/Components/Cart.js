@@ -15,7 +15,12 @@ export default function Cart() {
     function sum() {
       var total = 0;
       cart.forEach((item) => {
-        total = total + item.product.price * item.quantity;
+        total =
+          total +
+          item.product.price *
+            item.quantity *
+            (item.size === "Full" ? 2 : 1) *
+            (item.size === "Kitli" ? 4 : 1);
       });
       return total;
     }
@@ -92,6 +97,13 @@ export default function Cart() {
                   onClick={() => {
                     if (!user) {
                       history.push("/login");
+                      return;
+                    }
+                    if (!user.isEmailVerified) {
+                      history.push({
+                        pathname: "/signup",
+                        state: { email: user.email },
+                      });
                       return;
                     }
                     history.push("/checkout");

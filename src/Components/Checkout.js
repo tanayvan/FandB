@@ -36,20 +36,12 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const [paymentloading, setPaymentloading] = useState(false);
 
-  function sum() {
-    var total = 0;
-    cart.forEach((item) => {
-      total = total + item.product.price * item.quantity;
-    });
-    return total;
-  }
-
   const makePayment = (token) => {
     setPaymentloading(true);
     const body = {
       token: token,
       product: cart,
-      amount: sum(),
+      amount: total,
     };
     const header = {
       "Content-Type": "application/json",
@@ -86,7 +78,7 @@ export default function Checkout() {
     });
     const body = {
       products: productList,
-      amount: sum(),
+      amount: total,
       type: orderType.type,
       branch: orderType.branch,
       user: user.id,
@@ -114,7 +106,12 @@ export default function Checkout() {
     function sum() {
       var total = 0;
       cart.forEach((item) => {
-        total = total + item.product.price * item.quantity;
+        total =
+          total +
+          item.product.price *
+            item.quantity *
+            (item.size === "Full" ? 2 : 1) *
+            (item.size === "Kitli" ? 4 : 1);
       });
       return total;
     }
@@ -246,7 +243,7 @@ export default function Checkout() {
                     <StripeCheckout
                       stripeKey={process.env.REACT_APP_KEY}
                       token={makePayment}
-                      amount={sum() * 100}
+                      amount={total * 100}
                     >
                       <AppButton
                         padding="5px 0px"

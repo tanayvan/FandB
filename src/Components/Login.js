@@ -41,6 +41,8 @@ export default function Login() {
           name: data.user.name,
           role: data.user.role,
           id: data.user._id,
+          email: data.user.email,
+          isEmailVerified: data.user.isEmailVerified,
         })
       );
       setLoading(false);
@@ -50,7 +52,16 @@ export default function Login() {
         name: data.user.name,
         role: data.user.role,
         id: data.user._id,
+        email: data.user.email,
+        isEmailVerified: data.user.isEmailVerified,
       });
+
+      if (!data.user.isEmailVerified) {
+        history.push({
+          pathname: "/signup",
+          state: { email: data.user.email },
+        });
+      }
     });
   };
   if (redirect) {
@@ -99,7 +110,6 @@ export default function Login() {
           <FormSubmit loading={loading}>Login</FormSubmit>
         </FormikForm>
 
-        <br />
         <p style={{ color: "grey" }}>
           Dont have Account ?{" "}
           <span

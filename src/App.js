@@ -46,6 +46,18 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (
+      cities.length > 0 &&
+      orderType &&
+      orderType.city &&
+      cities.filter((e) => e.name === orderType.city).length < 1
+    ) {
+      setOrderType("");
+      localStorage.setItem("orderType", JSON.stringify(""));
+    }
+  }, [orderType, cities]);
+
+  useEffect(() => {
     setLoading(true);
     const getAllData = async () => {
       let query = user && user.role === 1 ? `?user=${user.id}` : "";
@@ -66,10 +78,6 @@ export default function App() {
         })
         .then((data) => {
           // console.log("app", orderType);
-          if (orderType && orderType.city && data.filter((e) => e.name === orderType.city).length < 1) {
-            setOrderType("");
-            localStorage.setItem("orderType", JSON.stringify(""));
-          }
         })
         .catch((err) => {
           console.log(err);
@@ -88,7 +96,7 @@ export default function App() {
     };
 
     getAllData();
-  }, [user, orderType]);
+  }, [user]);
 
   useEffect(() => {
     const getProductsAndCategory = async () => {
