@@ -72,7 +72,9 @@ export default function MyOrders({ setLoading, loading, setLength }) {
           .reverse()
           .map((list, index) => {
             let date = list.updatedAt.split("T")[0];
-            console.log(list);
+            let time = new Date(list.updatedAt);
+            let ordertime = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+
             return (
               <Order
                 key={index.toString()}
@@ -81,6 +83,7 @@ export default function MyOrders({ setLoading, loading, setLength }) {
                 list={list}
                 orders={orders}
                 setOrders={setOrders}
+                time={ordertime}
               />
             );
           })}

@@ -14,7 +14,7 @@ export default function Navbar2() {
             {/* <MenuIcon /> */}
           </Box>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Chayoos
+            F&amp;B
           </Typography>
         </Toolbar>
       </AppBar>

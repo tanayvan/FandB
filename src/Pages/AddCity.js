@@ -97,6 +97,9 @@ export default function AddCity() {
           <p style={{ fontSize: 25 }}>Cities</p>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
+              <span style={{ color: "grey", fontSize: 14 }}>
+                Note : Deleting city will delete all branches of that city
+              </span>
               <List
                 dense={true}
                 style={{ backgroundColor: "white", borderRadius: 5 }}

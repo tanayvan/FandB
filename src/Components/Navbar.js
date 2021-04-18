@@ -26,10 +26,11 @@ import {
   Select,
 } from "@material-ui/core";
 import { Alert, ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import cartContext from "../context";
 import { getAllBranches } from "../Helper/apicalls";
 import color from "../Config/Color";
+import Scrollspy from "react-scrollspy";
 
 export default function Navbar(props) {
   const {
@@ -40,6 +41,7 @@ export default function Navbar(props) {
     setUser,
     cities,
     setCart,
+    categories,
   } = useContext(cartContext);
 
   const [showSideBar, setShowSideBar] = useState(false);
@@ -99,7 +101,7 @@ export default function Navbar(props) {
       onClick={() => setShowSideBar(false)}
       onKeyDown={() => setShowSideBar(false)}
     >
-      <List style={{ flexGrow: 1, paddingTop: 0 }}>
+      <List style={{ flexGrow: 1, paddingTop: 0 }} className="leftDrawer">
         <ListItem
           key={"user"}
           style={{
@@ -198,27 +200,6 @@ export default function Navbar(props) {
             <ListItemText primary={"Login"} />
           </ListItem>
         )}
-        {user && (
-          <ListItem
-            style={{
-              position: "absolute",
-              bottom: 0,
-              backgroundColor: "red",
-              color: "white",
-            }}
-            button
-            key={"Logout"}
-            onClick={() => {
-              setUser(null);
-              localStorage.setItem("userData", JSON.stringify(""));
-            }}
-          >
-            <ListItemIcon>
-              <Icon style={{ color: "white" }}>logout</Icon>
-            </ListItemIcon>
-            <ListItemText primary={"Logout"} />
-          </ListItem>
-        )}
 
         {user && user.role === 1 && (
           <>
@@ -286,6 +267,27 @@ export default function Navbar(props) {
           </>
         )}
       </List>
+      {user && (
+        <ListItem
+          style={{
+            // position: "absolute",
+            // bottom: 0,
+            backgroundColor: "red",
+            color: "white",
+          }}
+          button
+          key={"Logout"}
+          onClick={() => {
+            setUser(null);
+            localStorage.setItem("userData", JSON.stringify(""));
+          }}
+        >
+          <ListItemIcon>
+            <Icon style={{ color: "white" }}>logout</Icon>
+          </ListItemIcon>
+          <ListItemText primary={"Logout"} />
+        </ListItem>
+      )}
       {/* <Divider />
       <List>
         {["All mail", "Trash", "Spam"].map((text, index) => (
@@ -456,13 +458,13 @@ export default function Navbar(props) {
         </div>
       )}
 
-      <div style={{ flexGrow: 1 }}>
+      <div style={{ flexGrow: 1, position: "sticky", top: 0, zIndex: 10 }}>
         <AppBar
           position="sticky"
           style={{
             backgroundColor: "#5E7E47",
             // position: "absolute",
-            // top: 0,
+            top: 0,
           }}
         >
           <Toolbar>
@@ -477,8 +479,8 @@ export default function Navbar(props) {
                 <MenuIcon />
               </IconButton>
             </Box>
-            <Typography variant="h6">Chayoos</Typography>
-            <div style={{ flexGrow: 1, margin: "0px 10px" }}>
+            <Typography variant="h6">F&amp;B</Typography>
+            <div style={{ flexGrow: 1, margin: "0px 0px 0px 20px" }}>
               <button
                 onClick={() => setShowTopDrawer(true)}
                 style={{
@@ -520,6 +522,36 @@ export default function Navbar(props) {
             </IconButton>
             {/* </Link> */}
           </Toolbar>
+
+          <Scrollspy
+            items={categories.map((a) => a.name.replace(" ", ""))}
+            currentClassName="activeCategory"
+            style={{
+              display: "flex",
+              backgroundColor: " rgb(75 105 54)",
+              margin: 0,
+              justifyContent: "center",
+              // position: "-webkit-sticky",
+              position: "sticky",
+              top: 0,
+              zIndex: 2,
+              overflow: "auto",
+            }}
+          >
+            {categories.map((category) => (
+              <Link
+                style={{
+                  padding: 10,
+                  textDecoration: "none",
+                  color: "white",
+                  minWidth: "fit-content",
+                }}
+                href={`#${category.name.replace(" ", "")}`}
+              >
+                {category.name}
+              </Link>
+            ))}
+          </Scrollspy>
         </AppBar>
       </div>
 

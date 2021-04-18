@@ -55,7 +55,7 @@ export default function Adminorders({ loading, setLoading, setLength }) {
           .reverse()
           .map((list, index) => {
             let date = list.updatedAt.split("T")[0];
-            console.log(list);
+            console.log("list", list);
             return (
               <Order
                 key={index.toString()}

@@ -69,7 +69,7 @@ export default function Checkout() {
     let productList = [];
     cart.forEach((cart) => {
       productList.push({
-        product: cart.product._id,
+        product: cart.product,
         quantity: cart.quantity,
         size: cart.size,
         sugar: cart.sugar,

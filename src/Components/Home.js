@@ -1,6 +1,6 @@
 import { Container, Grid } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
-import Scrollspy from "react-scrollspy";
+
 import { getAllBranches } from "../Helper/apicalls";
 
 import cartContext from "../context";
@@ -41,7 +41,7 @@ export default function Home() {
 
   return (
     <>
-      <Scrollspy
+      {/* <Scrollspy
         items={categories.map((a) => a.name.replace(" ", ""))}
         currentClassName="activeCategory"
         style={{
@@ -69,7 +69,7 @@ export default function Home() {
             {category.name}
           </a>
         ))}
-      </Scrollspy>
+      </Scrollspy> */}
       <div style={{ margin: "30px 0px", zindex: 1 }}>
         <Container maxWidth="lg">
           {categories.map((category, index) => {

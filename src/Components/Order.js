@@ -9,13 +9,13 @@ export default function Order({
   date,
 
   status,
-
+  time,
   list,
   orders,
   setOrders,
   admin,
 }) {
-  const { products, user } = useContext(cartContext);
+  const { user } = useContext(cartContext);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
 
@@ -62,7 +62,10 @@ export default function Order({
         <Grid container className="textCenter" spacing={2}>
           <Grid item xs={6} sm={3}>
             <div style={{ fontSize: 14, color: "grey" }}>Order Placed</div>
-            <div>{date}</div>
+            <div>
+              &#128197; {date} <br />
+              &#x1F552; {time}
+            </div>
           </Grid>
           <Grid item xs={6} sm={3}>
             <div style={{ fontSize: 14, color: "grey" }}>
@@ -98,11 +101,11 @@ export default function Order({
         </Grid>
       </div>
       {list.products.map((item, index) => {
-        let finalItem = { ...item };
-        let productDetail = products.find((x) => x._id === item.product);
-        finalItem.product = productDetail;
-        console.log("yay", finalItem);
-        return <OrderItem item={finalItem} key={index.toString()} />;
+        // let finalItem = { ...item };
+        // let productDetail = products.find((x) => x._id === item.product);
+        // finalItem.product = productDetail;
+        // console.log("yay", finalItem);
+        return <OrderItem item={item} key={index.toString()} />;
       })}
       <Grid container>
         <Grid item xs={0} sm={6}></Grid>

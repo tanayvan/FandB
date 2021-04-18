@@ -84,8 +84,13 @@ export default function AddCategory() {
           }}
         >
           <p style={{ fontSize: 25 }}>Add Category</p>
+
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
+              <span style={{ color: "grey", fontSize: 14 }}>
+                Note : Deleting category will delete all products of that
+                category
+              </span>
               <List
                 dense={true}
                 style={{ backgroundColor: "white", borderRadius: 5 }}
