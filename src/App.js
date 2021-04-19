@@ -23,6 +23,7 @@ import OrderPlaced from "./Pages/OrderPlaced";
 import Lottie from "react-lottie";
 import OrdersPage from "./Pages/OrdersPage";
 import AboutPage from "./Pages/AboutPage";
+import ProfilePage from "./Pages/ProfilePage";
 
 export default function App() {
   const [cart, setCart] = useState(
@@ -195,6 +196,7 @@ export default function App() {
           <Route exact path="/orderplaced" component={OrderPlaced} />
           <Route exact path="/orders" component={OrdersPage} />
           <Route exact path="/about" component={AboutPage} />
+          <Route exact path="/profile" component={ProfilePage} />
         </Switch>
       </BrowserRouter>
     </cartContext.Provider>

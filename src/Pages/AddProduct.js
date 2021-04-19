@@ -79,7 +79,7 @@ export default function AddProduct() {
             border: "1px solid #e8e8e8",
           }}
         >
-          <p style={{ fontSize: 25 }}>Add Product</p>
+          <p style={{ fontSize: 25 }}>Branchies</p>
           <ErrorText error={error} />
           <FormikForm
             successMessage="Product added Successfully"

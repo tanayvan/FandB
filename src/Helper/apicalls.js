@@ -298,3 +298,38 @@ export const CompletedOrder = (orderId, userId, token, body) => {
       console.log(err);
     });
 };
+
+export const UserData = (userId, token) => {
+  return fetch(`${API}/user/${userId}`, {
+    method: "Get",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const UpdateUserData = (type, userId, token, body) => {
+  return fetch(`${API}/user/${userId}`, {
+    method: "PUt",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

@@ -83,7 +83,7 @@ export default function AddCategory() {
             border: "1px solid #e8e8e8",
           }}
         >
-          <p style={{ fontSize: 25 }}>Add Category</p>
+          <p style={{ fontSize: 25 }}>Categories</p>
 
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>

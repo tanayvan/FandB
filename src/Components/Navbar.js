@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ListItemText from "@material-ui/core/ListItemText";
+import "./My.css";
 
 import Icon from "@material-ui/core/Icon";
 import {
@@ -100,6 +101,7 @@ export default function Navbar(props) {
       role="presentation"
       onClick={() => setShowSideBar(false)}
       onKeyDown={() => setShowSideBar(false)}
+      className="leftDrawer"
     >
       <List style={{ flexGrow: 1, paddingTop: 0 }} className="leftDrawer">
         <ListItem
@@ -190,6 +192,22 @@ export default function Navbar(props) {
             <Icon>assignment_turned_in</Icon>
           </ListItemIcon>
           <ListItemText primary={"My Orders"} />
+        </ListItem>
+        <ListItem
+          button
+          key={"Profile"}
+          onClick={() => {
+            if (user) {
+              history.push("/profile");
+            } else {
+              history.push("/login");
+            }
+          }}
+        >
+          <ListItemIcon>
+            <Icon>account_circle</Icon>
+          </ListItemIcon>
+          <ListItemText primary={"Profile"} />
         </ListItem>
 
         {!user && (
@@ -522,36 +540,40 @@ export default function Navbar(props) {
             </IconButton>
             {/* </Link> */}
           </Toolbar>
-
-          <Scrollspy
-            items={categories.map((a) => a.name.replace(" ", ""))}
-            currentClassName="activeCategory"
-            style={{
-              display: "flex",
-              backgroundColor: " rgb(75 105 54)",
-              margin: 0,
-              justifyContent: "center",
-              // position: "-webkit-sticky",
-              position: "sticky",
-              top: 0,
-              zIndex: 2,
-              overflow: "auto",
-            }}
-          >
-            {categories.map((category) => (
-              <Link
+          <span style={{ display: "flex", backgroundColor: " rgb(75 105 54)" }}>
+            <div style={{ margin: "auto", overflow: "auto" }}>
+              <Scrollspy
+                items={categories.map((a) => a.name.replace(" ", ""))}
+                currentClassName="activeCategory"
                 style={{
-                  padding: 10,
-                  textDecoration: "none",
-                  color: "white",
-                  minWidth: "fit-content",
+                  display: "flex",
+                  backgroundColor: " rgb(75 105 54)",
+                  margin: 0,
+                  // justifyContent: "center",
+                  // position: "-webkit-sticky",
+                  width: "fit-content",
+                  position: "sticky",
+                  top: 0,
+                  zIndex: 2,
+                  overflow: "auto",
                 }}
-                href={`#${category.name.replace(" ", "")}`}
               >
-                {category.name}
-              </Link>
-            ))}
-          </Scrollspy>
+                {categories.map((category) => (
+                  <Link
+                    style={{
+                      padding: 10,
+                      textDecoration: "none",
+                      color: "white",
+                      minWidth: "fit-content",
+                    }}
+                    href={`#${category.name.replace(" ", "")}`}
+                  >
+                    {category.name}
+                  </Link>
+                ))}
+              </Scrollspy>
+            </div>
+          </span>
         </AppBar>
       </div>
 
